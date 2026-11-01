@@ -13,15 +13,26 @@ def classify_claim(
     text: str,
     heading_path: list[str],
     path: str,
-) -> Literal["active_assertion", "code_example", "historical_migration", "general_description"]:
+) -> Literal[
+    "active_assertion",
+    "procedural_instruction",
+    "api_reference",
+    "configuration_instruction",
+    "code_example",
+    "historical_migration",
+    "version_specific",
+    "general_description",
+]:
     """Classifies a documentation span's semantic claim category."""
     # 1. Fenced blocks are code examples
     if block_type == "fence":
         return "code_example"
 
-    # 2. Check path or headings for historical/changelog/migration
     combined_headings = " ".join(heading_path).lower()
     path_lower = path.lower()
+    text_lower = text.lower()
+
+    # 2. Check path or headings for historical/changelog/migration
     if (
         "changelog" in path_lower
         or "history" in path_lower
@@ -34,25 +45,64 @@ def classify_claim(
         return "historical_migration"
 
     # 3. Check text for historical phrases
-    text_lower = text.lower()
     if (
         "previously" in text_lower
         or "formerly" in text_lower
         or "prior to" in text_lower
-        or "in version" in text_lower
-        or "in v0." in text_lower
-        or "in v1." in text_lower
         or "old behavior" in text_lower
         or "deprecated in" in text_lower
     ):
         return "historical_migration"
 
-    # 4. Check if text is an illustrative code call / override
+    # 4. Check for version-specific statements
+    if (
+        re.search(r"\bin version \d", text_lower)
+        or re.search(r"\bsince v?\d", text_lower)
+        or re.search(r"\bas of v?\d", text_lower)
+        or re.search(r"\bin v\d", text_lower)
+    ):
+        return "version_specific"
+
+    # 5. API Reference & Table Spans
+    if block_type == "table_cell" or any(
+        h in combined_headings for h in ["api reference", "parameters", "arguments", "options"]
+    ):
+        return "api_reference"
+
+    # 6. Configuration & Environment Instructions
+    if (
+        any(h in combined_headings for h in ["configuration", "config", "environment"])
+        or "env var" in text_lower
+        or "environment variable" in text_lower
+        or re.search(r"\b[A-Z0-9_]{4,}\b", text)
+        and any(w in text_lower for w in ["flag", "variable", "export", "setting"])
+    ):
+        return "configuration_instruction"
+
+    # 7. Procedural instructions
+    procedural_keywords = [
+        "to send",
+        "to configure",
+        "to enable",
+        "to disable",
+        "to override",
+        "to use",
+        "explicitly serialize",
+        "make sure to",
+        "be sure to",
+    ]
+    if any(pk in text_lower for pk in procedural_keywords) or (
+        text.startswith(("Set ", "Pass ", "Configure ", "Call ", "Run "))
+        and not any(w in text_lower for w in ["default", "defaults to", "returns", "raises"])
+    ):
+        return "procedural_instruction"
+
+    # 8. Check if text is an illustrative code call / override
     if text.startswith("client.") or text.startswith("api.") or "example" in combined_headings:
         if "=" in text and not any(kw in text_lower for kw in ["default", "timeout is", "must"]):
             return "code_example"
 
-    # 5. Check if text asserts an active specification, default, or concrete behavioral guidance
+    # 9. Active factual assertions
     active_keywords = [
         "default",
         "defaults to",
@@ -64,20 +114,11 @@ def classify_claim(
         "parameter",
         "flag",
         "argument",
-        "config",
         "timeout is",
         "retry",
         "retries",
-        "options",
         "by default",
         "will raise",
-        "serialize",
-        "explicitly",
-        "to send",
-        "to configure",
-        "to enable",
-        "to disable",
-        "to override",
     ]
     if any(kw in text_lower for kw in active_keywords):
         return "active_assertion"

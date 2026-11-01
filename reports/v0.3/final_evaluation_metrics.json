@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "evaluation_version": "v0.3.0",
+    "date": "2026-11-01T05:42:00+05:30",
+    "git_commit": "e8e2ddd (HEAD)",
+    "hardware": "MacBook Pro M4 (16GB Unified Memory)",
+    "python_version": "3.14.2",
+    "llm_engine": "Ollama local qwen3:8b",
+    "total_benchmark_cases": 48,
+    "total_repositories": 11,
+    "split_counts": {
+      "dev": 16,
+      "val": 10,
+      "held_out_test": 22
+    }
+  },
+  "partition_metrics": {
+    "development_and_validation": {
+      "total": 26,
+      "deterministic": {
+        "tp": 10,
+        "fp": 0,
+        "tn": 12,
+        "fn": 4,
+        "precision": 1.0,
+        "recall": 0.7142857142857143,
+        "specificity": 1.0,
+        "f1_score": 0.8333333333333333,
+        "avg_latency_ms": 225.32108661835082
+      },
+      "selective_hybrid": {
+        "tp": 13,
+        "fp": 0,
+        "tn": 12,
+        "fn": 1,
+        "precision": 1.0,
+        "recall": 0.9285714285714286,
+        "specificity": 1.0,
+        "f1_score": 0.962962962962963,
+        "model_invocations": 3,
+        "incremental_ai_wins": 3,
+        "avg_latency_ms": 5288.295955156523
+      }
+    },
+    "held_out_test": {
+      "total": 22,
+      "deterministic": {
+        "tp": 6,
+        "fp": 0,
+        "tn": 10,
+        "fn": 6,
+        "precision": 1.0,
+        "recall": 0.5,
+        "specificity": 1.0,
+        "f1_score": 0.6666666666666666,
+        "avg_latency_ms": 237.6966097270435
+      },
+      "selective_hybrid": {
+        "tp": 7,
+        "fp": 0,
+        "tn": 10,
+        "fn": 5,
+        "precision": 1.0,
+        "recall": 0.5833333333333334,
+        "specificity": 1.0,
+        "f1_score": 0.7368421052631579,
+        "model_invocations": 1,
+        "incremental_ai_wins": 1,
+        "incremental_ai_win_case": "REAL-MARSHMALLOW-01",
+        "avg_latency_ms": 1531.1398181379031
+      }
+    },
+    "overall_benchmark": {
+      "total": 48,
+      "deterministic": {
+        "tp": 16,
+        "fp": 0,
+        "tn": 22,
+        "fn": 10,
+        "passed": 38,
+        "precision": 1.0,
+        "recall": 0.6153846153846154,
+        "specificity": 1.0,
+        "f1_score": 0.761904761904762
+      },
+      "selective_hybrid": {
+        "tp": 20,
+        "fp": 0,
+        "tn": 22,
+        "fn": 6,
+        "passed": 42,
+        "precision": 1.0,
+        "recall": 0.7692307692307693,
+        "specificity": 1.0,
+        "f1_score": 0.8695652173913044,
+        "total_model_invocations": 4,
+        "total_incremental_ai_wins": 4
+      }
+    }
+  },
+  "ai_value_metrics": {
+    "overall_ai_incremental_value": 0.15384615384615385,
+    "held_out_ai_incremental_value": 0.08333333333333333,
+    "ai_false_positives": 0,
+    "ai_false_negatives": 0,
+    "ai_abstention_safety_rate": 1.0,
+    "evidence_validation_pass_rate": 1.0,
+    "average_ai_call_latency_ms": 1820.0
+  },
+  "cross_repository_support": {
+    "same_repo_cases": 46,
+    "separate_repo_cases": 2,
+    "cross_repo_verified_precision": 1.0,
+    "cross_repo_abstention_tested": true
+  }
+}

@@ -67,9 +67,14 @@ class SemanticModelVerifier:
 
             # Only invoke model if:
             # 1. Fact is behavioral (return_changed, exception_changed, behavior_changed)
-            # 2. OR Candidate link is strong semantic match and span is active_assertion
+            # 2. OR Candidate link is strong semantic match and span is an active/procedural claim
             is_behavioral = getattr(fact, "category", "syntactic") == "behavioral"
-            is_strong_semantic = link.score >= 5.0 and span_claim == "active_assertion"
+            is_strong_semantic = link.score >= 5.0 and span_claim in (
+                "active_assertion",
+                "procedural_instruction",
+                "api_reference",
+                "configuration_instruction",
+            )
 
             if not (is_behavioral or is_strong_semantic):
                 continue

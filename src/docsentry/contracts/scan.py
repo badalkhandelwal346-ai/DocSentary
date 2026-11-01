@@ -24,3 +24,7 @@ class ScanContext(BaseModel):
     model_enabled: bool = True
     config_hash: str
     tool_version: str
+    docs_repo_root: Path | None = None
+    docs_base_sha: str | None = None
+    docs_head_sha: str | None = None
+    docs_revision_mapping: dict[str, str] | None = None

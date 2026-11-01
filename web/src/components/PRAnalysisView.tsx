@@ -1,24 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SCENARIOS } from "../data/mockScenarios";
 import { EvidenceComparison } from "./EvidenceComparison";
 import {
   GitPullRequest,
   CheckCircle2,
-  FileCode,
   Clock,
   ChevronDown,
   ChevronUp,
   Download,
   Search,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
+import { api, Repository } from "../api/client";
 
-export const PRAnalysisView: React.FC = () => {
+interface PRAnalysisViewProps {
+  selectedRepoId?: string;
+}
+
+export const PRAnalysisView: React.FC<PRAnalysisViewProps> = ({ selectedRepoId }) => {
   const [selectedScenarioId, setSelectedScenarioId] = useState<string>("rw-httpx-653");
   const [expandedFindingId, setExpandedFindingId] = useState<string | null>("DG-0001");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showJsonModal, setShowJsonModal] = useState<boolean>(false);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
+
+  useEffect(() => {
+    async function loadRepos() {
+      try {
+        const repos = await api.listRepositories();
+        setRepositories(repos);
+      } catch {
+        // Fallback
+      }
+    }
+    loadRepos();
+  }, []);
+
+  const activeRepo = selectedRepoId ? repositories.find((r) => r.id === selectedRepoId) : null;
 
   const scenario = SCENARIOS.find((s) => s.id === selectedScenarioId) || SCENARIOS[0];
   const report = scenario.report;
@@ -39,21 +58,28 @@ export const PRAnalysisView: React.FC = () => {
   const potentialCount = report.summary.potential_drift || 0;
 
   return (
-    <div className="flex-1 overflow-y-auto bg-brand-dark p-6 space-y-6">
-      {/* Top Scenario Selector */}
-      <div className="bg-brand-surface border border-brand-border rounded-xl p-4">
+    <div className="flex-1 overflow-y-auto bg-[#F4EFE6] text-[#08161B] p-6 lg:p-8 space-y-6 font-sans paper-grain selection:bg-[#1C354D] selection:text-[#EAE7DC]">
+      {/* Top Selector Card */}
+      <div className="bg-[#EBE4D8] border border-[#D8CEBC] rounded-lg p-5 shadow-editorial">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3">
           <div>
-            <span className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-semibold">
-              Live Evaluation Scenarios
+            {activeRepo && (
+              <div className="text-xs font-mono text-[#1C354D] mb-1 font-bold">
+                Repository Scope: {activeRepo.full_name}
+              </div>
+            )}
+            <span className="text-[11px] font-mono uppercase tracking-wider text-[#4A6B32] font-semibold">
+              Pull Request Inspection
             </span>
-            <h2 className="text-base font-semibold text-white">Select a Pull Request to Inspect</h2>
+            <h2 className="font-serif text-2xl font-bold text-[#08161B]">
+              Select a Pull Request to Inspect
+            </h2>
           </div>
           <button
             onClick={() => setShowJsonModal(true)}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-md bg-brand-card hover:bg-brand-border text-xs font-mono text-gray-300 border border-brand-border transition-colors self-start md:self-auto"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded bg-[#F4EFE6] hover:bg-[#E2DACB] text-xs font-mono text-[#08161B] border border-[#D8CEBC] transition-colors self-start md:self-auto"
           >
-            <Download className="w-3.5 h-3.5 text-gray-400" />
+            <Download className="w-3.5 h-3.5 text-[#1C354D]" />
             <span>Inspect report.json</span>
           </button>
         </div>
@@ -69,32 +95,32 @@ export const PRAnalysisView: React.FC = () => {
                   setSelectedScenarioId(s.id);
                   setExpandedFindingId(s.report.findings[0]?.finding_id || null);
                 }}
-                className={`p-3 text-left rounded-lg border transition-all ${
+                className={`p-3 text-left rounded border transition-all ${
                   isSelected
-                    ? "bg-brand-card border-emerald-500/50 shadow-sm"
-                    : "bg-brand-dark/50 border-brand-border hover:bg-brand-card/50"
+                    ? "bg-[#F4EFE6] border-[#1C354D] shadow-sm ring-1 ring-[#1C354D]"
+                    : "bg-[#EBE4D8] border-[#D8CEBC] hover:bg-[#F4EFE6]"
                 }`}
               >
                 <div className="flex items-center justify-between text-xs mb-1">
                   <div className="flex items-center space-x-1.5">
-                    <span className="font-mono text-gray-400">PR #{s.prNumber}</span>
+                    <span className="font-mono text-[#6A7E85] text-[11px]">PR #{s.prNumber}</span>
                     {s.category === "real_world" && (
-                      <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                      <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-[#C87D55]/15 text-[#C87D55] font-bold">
                         REAL-WORLD
                       </span>
                     )}
                   </div>
                   <span
-                    className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${
+                    className={`text-[9px] font-mono px-1.5 py-0.2 rounded font-bold uppercase ${
                       hasDrift
-                        ? "bg-red-500/20 text-red-400 border border-red-500/30"
-                        : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
+                        ? "bg-red-100 text-red-700 border border-red-300"
+                        : "bg-emerald-100 text-emerald-800 border border-emerald-300"
                     }`}
                   >
                     {hasDrift ? "DRIFT" : "NO DRIFT"}
                   </span>
                 </div>
-                <div className="text-xs font-medium text-gray-200 truncate">{s.prTitle}</div>
+                <div className="text-xs font-semibold text-[#08161B] truncate">{s.prTitle}</div>
               </button>
             );
           })}
@@ -102,47 +128,58 @@ export const PRAnalysisView: React.FC = () => {
       </div>
 
       {/* Pull Request Header Banner */}
-      <div className="bg-brand-surface border border-brand-border rounded-xl p-5 space-y-4">
+      <div className="bg-[#EBE4D8] border border-[#D8CEBC] rounded-lg p-6 space-y-4 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-1">
             <div className="flex items-center space-x-2.5">
-              <span className="flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <span className="flex items-center space-x-1.5 px-2.5 py-0.5 rounded text-xs font-mono bg-[#1C354D] text-[#EAE7DC]">
                 <GitPullRequest className="w-3.5 h-3.5" />
                 <span>PR #{scenario.prNumber}</span>
               </span>
-              <h1 className="text-lg font-bold text-white tracking-tight">{scenario.prTitle}</h1>
+              <h1 className="font-serif text-2xl font-bold text-[#08161B] tracking-tight">
+                {scenario.prTitle}
+              </h1>
             </div>
-            <div className="flex flex-wrap items-center gap-3 text-xs text-gray-400 font-mono">
-              <span>Author: <strong className="text-gray-300 font-normal">@{scenario.author}</strong></span>
+            <div className="flex flex-wrap items-center gap-3 text-xs text-[#6A7E85] font-mono">
+              <span>
+                Author: <strong className="text-[#08161B] font-semibold">@{scenario.author}</strong>
+              </span>
               <span>•</span>
-              <span>Branch: <span className="text-emerald-400">{scenario.branch}</span> ➔ {scenario.targetBranch}</span>
+              <span>
+                Branch: <span className="text-[#1C354D] font-bold">{scenario.branch}</span> ➔{" "}
+                {scenario.targetBranch}
+              </span>
               <span>•</span>
-              <span>Base: <code className="text-gray-300">{report.base_sha.slice(0, 7)}</code></span>
+              <span>
+                Base: <code className="text-[#08161B]">{report.base_sha.slice(0, 7)}</code>
+              </span>
               <span>•</span>
-              <span>Head: <code className="text-cyan-300">{report.head_sha.slice(0, 7)}</code></span>
+              <span>
+                Head: <code className="text-[#1C354D] font-bold">{report.head_sha.slice(0, 7)}</code>
+              </span>
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 self-start md:self-auto">
-            <span className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-mono bg-brand-card border border-brand-border text-gray-300">
-              <Clock className="w-3.5 h-3.5 text-gray-400" />
+          <div className="flex items-center space-x-2 self-start md:self-auto font-mono">
+            <span className="flex items-center space-x-1.5 px-3 py-1.5 rounded text-xs bg-[#F4EFE6] border border-[#D8CEBC] text-[#3D4F55]">
+              <Clock className="w-3.5 h-3.5 text-[#6A7E85]" />
               <span>{report.duration_ms} ms</span>
             </span>
             <span
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold ${
+              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded text-xs font-bold uppercase tracking-wider ${
                 driftCount > 0
-                  ? "bg-red-500/10 text-red-400 border border-red-500/30"
-                  : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
+                  ? "bg-red-100 text-red-800 border border-red-300"
+                  : "bg-emerald-100 text-emerald-800 border border-emerald-300"
               }`}
             >
               {driftCount > 0 ? (
                 <>
-                  <AlertCircle className="w-4 h-4" />
+                  <AlertCircle className="w-4 h-4 text-red-700" />
                   <span>Drift Detected</span>
                 </>
               ) : (
                 <>
-                  <CheckCircle2 className="w-4 h-4" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-700" />
                   <span>Docs In Sync</span>
                 </>
               )}
@@ -151,28 +188,32 @@ export const PRAnalysisView: React.FC = () => {
         </div>
 
         {/* Summary Metric Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-brand-border/60">
-          <div className="bg-brand-card/60 p-3 rounded-lg border border-brand-border">
-            <div className="text-[11px] font-mono uppercase text-gray-400">Confirmed Drift</div>
-            <div className={`text-2xl font-bold font-mono mt-0.5 ${driftCount > 0 ? "text-red-400" : "text-gray-200"}`}>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-[#D8CEBC]">
+          <div className="bg-[#F4EFE6] p-3.5 rounded border border-[#D8CEBC]">
+            <div className="text-[10px] font-mono uppercase text-[#6A7E85]">Confirmed Drift</div>
+            <div
+              className={`text-2xl font-bold font-serif mt-0.5 ${
+                driftCount > 0 ? "text-[#C87D55]" : "text-[#08161B]"
+              }`}
+            >
               {driftCount}
             </div>
           </div>
-          <div className="bg-brand-card/60 p-3 rounded-lg border border-brand-border">
-            <div className="text-[11px] font-mono uppercase text-gray-400">Potential Drift</div>
-            <div className="text-2xl font-bold font-mono mt-0.5 text-amber-400">
+          <div className="bg-[#F4EFE6] p-3.5 rounded border border-[#D8CEBC]">
+            <div className="text-[10px] font-mono uppercase text-[#6A7E85]">Potential Drift</div>
+            <div className="text-2xl font-bold font-serif mt-0.5 text-[#C87D55]">
               {potentialCount}
             </div>
           </div>
-          <div className="bg-brand-card/60 p-3 rounded-lg border border-brand-border">
-            <div className="text-[11px] font-mono uppercase text-gray-400">Files Changed</div>
-            <div className="text-2xl font-bold font-mono mt-0.5 text-gray-200">
+          <div className="bg-[#F4EFE6] p-3.5 rounded border border-[#D8CEBC]">
+            <div className="text-[10px] font-mono uppercase text-[#6A7E85]">Files Changed</div>
+            <div className="text-2xl font-bold font-serif mt-0.5 text-[#08161B]">
               {report.summary.changed_files}
             </div>
           </div>
-          <div className="bg-brand-card/60 p-3 rounded-lg border border-brand-border">
-            <div className="text-[11px] font-mono uppercase text-gray-400">Docs Inspected</div>
-            <div className="text-2xl font-bold font-mono mt-0.5 text-emerald-400">
+          <div className="bg-[#F4EFE6] p-3.5 rounded border border-[#D8CEBC]">
+            <div className="text-[10px] font-mono uppercase text-[#6A7E85]">Docs Inspected</div>
+            <div className="text-2xl font-bold font-serif mt-0.5 text-[#4A6B32]">
               {report.summary.doc_spans || 12}
             </div>
           </div>
@@ -181,94 +222,93 @@ export const PRAnalysisView: React.FC = () => {
 
       {/* Filter and Search Bar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div className="flex items-center space-x-2 w-full sm:w-auto">
+        <div className="flex items-center space-x-2 w-full sm:w-auto font-mono">
           <div className="relative flex-1 sm:w-64">
-            <Search className="w-4 h-4 absolute left-3 top-2.5 text-gray-500" />
+            <Search className="w-4 h-4 absolute left-3 top-2.5 text-[#6A7E85]" />
             <input
               type="text"
               placeholder="Search findings or rule ID..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-brand-surface border border-brand-border rounded-lg text-gray-200 placeholder-gray-500 focus:outline-none focus:border-emerald-500/50"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-[#EBE4D8] border border-[#D8CEBC] rounded text-[#08161B] placeholder-[#6A7E85] focus:outline-none focus:border-[#1C354D]"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-1.5 text-xs bg-brand-surface border border-brand-border rounded-lg text-gray-300 focus:outline-none focus:border-emerald-500/50"
+            className="px-3 py-1.5 text-xs bg-[#EBE4D8] border border-[#D8CEBC] rounded text-[#08161B] focus:outline-none focus:border-[#1C354D]"
           >
             <option value="all">All Statuses</option>
             <option value="DRIFT">Confirmed Drift</option>
             <option value="POTENTIAL_DRIFT">Potential Drift</option>
-            <option value="UNCERTAIN">Uncertain</option>
+            <option value="NO_DRIFT">In Sync</option>
           </select>
         </div>
 
-        <div className="text-xs text-gray-500 font-mono self-end sm:self-auto">
+        <div className="text-xs font-mono text-[#6A7E85]">
           Showing {filteredFindings.length} of {report.findings.length} findings
         </div>
       </div>
 
-      {/* Findings List */}
-      <div className="space-y-4">
+      {/* Findings List (Accordion Style) */}
+      <div className="space-y-3">
         {filteredFindings.length === 0 ? (
-          <div className="bg-brand-surface border border-brand-border rounded-xl p-8 text-center space-y-2">
-            <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
-            <h3 className="text-sm font-semibold text-white">No Documentation Drift Detected</h3>
-            <p className="text-xs text-gray-400 max-w-md mx-auto">
-              All modified symbols, parameters, and defaults in this pull request remain consistent with existing documentation.
+          <div className="p-8 text-center bg-[#EBE4D8] border border-[#D8CEBC] rounded-lg space-y-2">
+            <CheckCircle2 className="w-8 h-8 text-[#4A6B32] mx-auto" />
+            <div className="font-serif font-bold text-base text-[#08161B]">
+              No matching drift findings
+            </div>
+            <p className="text-xs text-[#3D4F55]">
+              All inspected documentation claims match the extracted code AST.
             </p>
           </div>
         ) : (
           filteredFindings.map((finding) => {
             const isExpanded = expandedFindingId === finding.finding_id;
+            const isDrift = finding.status === "DRIFT";
             return (
               <div
                 key={finding.finding_id}
-                className="bg-brand-surface border border-brand-border rounded-xl overflow-hidden transition-all shadow-sm"
+                className="bg-[#EBE4D8] border border-[#D8CEBC] rounded-lg overflow-hidden shadow-sm transition-all"
               >
-                {/* Finding Header */}
+                {/* Header row */}
                 <div
                   onClick={() => setExpandedFindingId(isExpanded ? null : finding.finding_id)}
-                  className="p-4 flex items-center justify-between cursor-pointer hover:bg-brand-card/40 transition-colors"
+                  className="p-4 cursor-pointer hover:bg-[#E2DACB] transition-colors flex items-center justify-between"
                 >
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-3 truncate">
                     <span
-                      className={`text-xs font-mono font-bold px-2 py-0.5 rounded border ${
-                        finding.status === "DRIFT"
-                          ? "bg-red-500/10 text-red-400 border-red-500/30"
-                          : "bg-amber-500/10 text-amber-400 border-amber-500/30"
+                      className={`text-[9px] font-mono font-bold px-2 py-0.5 rounded uppercase tracking-wider ${
+                        isDrift
+                          ? "bg-[#C87D55] text-white"
+                          : "bg-[#4A6B32] text-white"
                       }`}
                     >
                       {finding.status}
                     </span>
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-100">{finding.title}</h3>
-                      <div className="flex items-center space-x-2 text-[11px] font-mono text-gray-400 mt-0.5">
-                        <span className="text-gray-300">{finding.rule_id}</span>
-                        <span>•</span>
-                        <span>{finding.category}</span>
-                        <span>•</span>
-                        <span>Severity: <strong className="text-gray-200">{finding.severity}</strong></span>
-                      </div>
-                    </div>
+                    <span className="font-mono text-xs text-[#6A7E85]">
+                      {finding.rule_id}
+                    </span>
+                    <span className="font-serif font-bold text-sm text-[#08161B] truncate">
+                      {finding.title}
+                    </span>
                   </div>
 
                   <div className="flex items-center space-x-3">
-                    <span className="text-xs font-mono text-gray-500 hidden sm:inline">
-                      {finding.evidence.length} evidence refs
+                    <span className="text-[11px] font-mono text-[#6A7E85] hidden sm:inline">
+                      {finding.evidence.length} evidence anchors
                     </span>
                     {isExpanded ? (
-                      <ChevronUp className="w-4 h-4 text-gray-400" />
+                      <ChevronUp className="w-4 h-4 text-[#08161B]" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-gray-400" />
+                      <ChevronDown className="w-4 h-4 text-[#08161B]" />
                     )}
                   </div>
                 </div>
 
-                {/* Expanded Detail with Side-by-Side Comparison */}
+                {/* Expanded Cyanotype Inspector */}
                 {isExpanded && (
-                  <div className="p-4 pt-0 border-t border-brand-border/40">
+                  <div className="p-4 border-t border-[#D8CEBC] bg-[#F4EFE6]">
                     <EvidenceComparison finding={finding} />
                   </div>
                 )}
@@ -278,23 +318,22 @@ export const PRAnalysisView: React.FC = () => {
         )}
       </div>
 
-      {/* Raw JSON Modal */}
+      {/* Raw JSON Report Modal */}
       {showJsonModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
-          <div className="bg-brand-surface border border-brand-border rounded-xl max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden">
-            <div className="p-4 border-b border-brand-border flex items-center justify-between">
-              <div className="flex items-center space-x-2 font-mono text-sm text-gray-200">
-                <FileCode className="w-4 h-4 text-emerald-400" />
-                <span>ScanReport Artifact: {report.scan_id}.json</span>
-              </div>
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+          <div className="max-w-3xl w-full bg-[#08161B] text-[#EAE7DC] border border-[#1C354D] rounded-lg p-6 space-y-4 max-h-[80vh] flex flex-col font-mono text-xs">
+            <div className="flex items-center justify-between border-b border-[#1C354D] pb-3">
+              <span className="font-bold text-sm text-[#5894C4]">
+                DocSentry report.json — Schema v0.2
+              </span>
               <button
                 onClick={() => setShowJsonModal(false)}
-                className="text-gray-400 hover:text-white text-xs font-mono"
+                className="text-[#8DA0A8] hover:text-white"
               >
-                Close [ESC]
+                Close ✕
               </button>
             </div>
-            <pre className="p-4 overflow-y-auto text-xs font-mono text-gray-300 bg-brand-dark/90 leading-relaxed flex-1">
+            <pre className="overflow-auto flex-1 p-3 bg-[#0D1C29] rounded text-[11px] leading-relaxed text-[#EAE7DC]">
               {JSON.stringify(report, null, 2)}
             </pre>
           </div>

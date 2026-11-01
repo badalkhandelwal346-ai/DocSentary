@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: docsentry-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-docsentry}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-docsentry_secret}
+      POSTGRES_DB: ${POSTGRES_DB:-docsentry_prod}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docsentry -d docsentry_prod"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: docsentry-backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DOCSENTRY_ENV=production
+      - DOCSENTRY_DATABASE_URL=postgresql+psycopg://docsentry:docsentry_secret@db:5432/docsentry_prod
+      - DOCSENTRY_SECRET_KEY=${DOCSENTRY_SECRET_KEY:-docsentry-super-secret-key-prod-12345}
+      - DOCSENTRY_GITHUB_CLIENT_ID=${DOCSENTRY_GITHUB_CLIENT_ID}
+      - DOCSENTRY_GITHUB_CLIENT_SECRET=${DOCSENTRY_GITHUB_CLIENT_SECRET}
+      - DOCSENTRY_GITHUB_WEBHOOK_SECRET=${DOCSENTRY_GITHUB_WEBHOOK_SECRET}
+    ports:
+      - "8000:8000"
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: docsentry-web
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+volumes:
+  postgres_data:

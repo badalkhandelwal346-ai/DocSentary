@@ -17,8 +17,12 @@ class DocSpan(BaseModel):
     language: str | None = None
     claim_type: Literal[
         "active_assertion",
+        "procedural_instruction",
+        "api_reference",
+        "configuration_instruction",
         "code_example",
         "historical_migration",
+        "version_specific",
         "general_description",
     ] = "active_assertion"
 

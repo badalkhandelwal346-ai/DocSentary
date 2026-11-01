@@ -30,6 +30,14 @@ class ModelAssessment(BaseModel):
     severity: Literal["critical", "high", "medium", "low", "info"] = "medium"
     explanation: str
     evidence_ids: list[str] = Field(default_factory=list)
+    claim_status: Literal[
+        "contradicted",
+        "partially_outdated",
+        "incomplete_new_capability",
+        "still_accurate",
+        "historical",
+        "uncertain",
+    ] = "contradicted"
     reasoning_type: Literal[
         "direct_contradiction",
         "likely_outdated",

@@ -1,0 +1,82 @@
+[
+  {
+    "case_id": "ADV-01-VOCAB-GAP",
+    "expected": true,
+    "detected": false,
+    "passed": false,
+    "rule_id": null,
+    "invocations": 0
+  },
+  {
+    "case_id": "ADV-02-HOMONYM-TRAP",
+    "expected": false,
+    "detected": false,
+    "passed": true,
+    "rule_id": null,
+    "invocations": 0
+  },
+  {
+    "case_id": "ADV-03-INTERNAL-INVARIANT",
+    "expected": false,
+    "detected": false,
+    "passed": true,
+    "rule_id": null,
+    "invocations": 0
+  },
+  {
+    "case_id": "ADV-04-BACKWARD-COMPAT-ADD",
+    "expected": false,
+    "detected": false,
+    "passed": true,
+    "rule_id": null,
+    "invocations": 0
+  },
+  {
+    "case_id": "ADV-05-PROCEDURAL-OBSOLETE",
+    "expected": true,
+    "detected": false,
+    "passed": false,
+    "rule_id": null,
+    "invocations": 0
+  },
+  {
+    "case_id": "ADV-06-BEHAVIORAL-NO-SIG",
+    "expected": true,
+    "detected": true,
+    "passed": true,
+    "rule_id": "PY-BEHAVIOR-006",
+    "invocations": 2
+  },
+  {
+    "case_id": "ADV-07-RETURN-TYPE-ITERATOR",
+    "expected": true,
+    "detected": true,
+    "passed": true,
+    "rule_id": "PY-BEHAVIOR-006",
+    "invocations": 1
+  },
+  {
+    "case_id": "ADV-08-CALLGRAPH-DEFAULT",
+    "expected": true,
+    "detected": false,
+    "passed": false,
+    "rule_id": null,
+    "invocations": 0
+  },
+  {
+    "case_id": "ADV-09-SECURITY-INDIRECT",
+    "expected": true,
+    "detected": false,
+    "passed": false,
+    "rule_id": null,
+    "invocations": 0
+  },
+  {
+    "case_id": "ADV-10-HISTORICAL-NOTE",
+    "expected": false,
+    "detected": false,
+    "passed": true,
+    "rule_id": null,
+    "invocations": 0
+  }
+]

@@ -109,12 +109,12 @@ class CandidateMapper:
                 if fact.kind == "return_changed" and any(
                     w in span_lower for w in ["return", "returns", "empty", "result"]
                 ):
-                    score += 5.0
+                    score += 6.0
                     reasons.append("return_semantic_match")
                 elif fact.kind == "exception_changed" and any(
                     w in span_lower for w in ["raise", "raises", "exception", "error"]
                 ):
-                    score += 5.0
+                    score += 6.0
                     reasons.append("exception_semantic_match")
                 elif fact.kind == "behavior_changed" and any(
                     w in span_lower for w in ["auth", "login", "async", "await", "sync"]
@@ -122,16 +122,61 @@ class CandidateMapper:
                     score += 5.0
                     reasons.append("behavior_semantic_match")
 
-                # Adjust score based on claim type
-                if getattr(span, "claim_type", "active_assertion") == "historical_migration":
+                # 9. Call-site and linked parameter propagation
+                if linked_params:
+                    span_tokens = set(re.findall(r"[a-z0-9]+", span_lower))
+                    for lp in linked_params:
+                        lp_tokens = tokenize_identifier(str(lp))
+                        if (lp_tokens & span_tokens) and (
+                            fact.kind in ("constant_changed", "default_changed")
+                        ):
+                            score += 4.0
+                            reasons.append("call_site_linked_match")
+                            break
+
+                # 10. Claim-type relevance adjustment
+                span_claim = getattr(span, "claim_type", "active_assertion")
+                if span_claim == "historical_migration":
                     # Historical/changelog entries are low relevance for current drift
                     score = max(0.0, score - 6.0)
-                elif (
-                    getattr(span, "claim_type", "active_assertion") == "code_example"
-                    and fact.kind == "default_changed"
-                ):
+                elif span_claim == "code_example" and fact.kind == "default_changed":
                     # Code examples with explicit arguments do not assert defaults
                     score = max(0.0, score - 5.0)
+                elif span_claim == "procedural_instruction":
+                    if fact.kind == "parameter_added" and (
+                        fact_tokens & set(re.findall(r"[a-z0-9]+", span_lower))
+                    ):
+                        score += 5.0
+                        reasons.append("procedural_instruction_match")
+                elif span_claim == "api_reference":
+                    if fact.symbol and fact.symbol in span_text:
+                        score += 3.0
+                        reasons.append("api_reference_match")
+                elif span_claim == "configuration_instruction":
+                    if fact.kind in ("config_flag_changed", "constant_changed"):
+                        score += 4.0
+                        reasons.append("configuration_instruction_match")
+
+                # 11. Sibling disambiguation penalty
+                siblings = fact.metadata.get("sibling_symbols", [])
+                sibling_consts = fact.metadata.get("sibling_constants", [])
+                all_sibs = (siblings if isinstance(siblings, list) else []) + (
+                    sibling_consts if isinstance(sibling_consts, list) else []
+                )
+                if all_sibs and fact.symbol:
+                    has_this_symbol = (
+                        fact.symbol in span.inline_code
+                        or re.search(rf"\b{re.escape(fact.symbol)}\b", span_text)
+                    )
+                    if not has_this_symbol:
+                        for sib in all_sibs:
+                            sib_str = str(sib)
+                            if sib_str and (
+                                sib_str in span.inline_code
+                                or re.search(rf"\b{re.escape(sib_str)}\b", span_text)
+                            ):
+                                score = max(0.0, score - 6.0)
+                                break
 
                 if score >= self.min_score:
                     scored_spans.append((score, reasons, span))

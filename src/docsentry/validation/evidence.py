@@ -9,13 +9,19 @@ class EvidenceValidator:
     in the snapshot commits before emitting the finding.
     """
 
-    def __init__(self, snapshot_service: GitSnapshotService) -> None:
+    def __init__(
+        self,
+        snapshot_service: GitSnapshotService,
+        doc_snapshot_service: GitSnapshotService | None = None,
+    ) -> None:
         self.snapshot_service = snapshot_service
+        self.doc_snapshot_service = doc_snapshot_service or snapshot_service
 
     def validate_findings(
         self,
         findings: list[Finding],
         head_sha: str,
+        docs_head_sha: str | None = None,
     ) -> list[Finding]:
         validated: list[Finding] = []
 
@@ -34,7 +40,8 @@ class EvidenceValidator:
                 elif ev.role == "documentation":
                     has_doc = True
                     # Re-open snapshot to ensure doc line & quote exist
-                    content = self.snapshot_service.read_file(head_sha, ev.path)
+                    target_sha = docs_head_sha or head_sha
+                    content = self.doc_snapshot_service.read_file(target_sha, ev.path)
                     if content is None:
                         doc_valid = False
                     elif ev.quote:
@@ -45,13 +52,14 @@ class EvidenceValidator:
 
             if not (has_code and has_doc) or not doc_valid:
                 # Downgrade to UNCERTAIN
+                target_ref = (docs_head_sha or head_sha)[:8]
                 downgraded = finding.model_copy(
                     update={
                         "status": "UNCERTAIN",
                         "severity": "info",
                         "explanation": (
                             f"{finding.explanation} (Note: Evidence validation could not "
-                            f"verify exact text in {head_sha[:8]}; downgraded to UNCERTAIN)."
+                            f"verify exact text in {target_ref}; downgraded to UNCERTAIN)."
                         ),
                     }
                 )

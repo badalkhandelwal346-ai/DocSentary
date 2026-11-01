@@ -1,0 +1,1377 @@
+{
+  "benchmark_version": "v0.3.0",
+  "description": "Authentic multi-repository documentation drift benchmark with strict repository-level splits.",
+  "total_cases": 48,
+  "split_counts": {
+    "dev": 16,
+    "val": 10,
+    "test": 22
+  },
+  "finding_counts": {
+    "positive_drift": 26,
+    "negative_controls": 22
+  },
+  "repository_counts": {
+    "encode/httpx": 6,
+    "pallets/click": 5,
+    "fastapi/fastapi": 5,
+    "psf/requests": 4,
+    "pydantic/pydantic": 5,
+    "pallets/flask": 5,
+    "axios/axios": 2,
+    "urllib3/urllib3": 6,
+    "encode/starlette": 4,
+    "marshmallow-code/marshmallow": 4,
+    "facebook/react": 2
+  },
+  "cases": [
+    {
+      "case_id": "REAL-HTTPX-01",
+      "repository": "encode/httpx",
+      "repository_url": "https://github.com/encode/httpx",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "constant_value_change",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "076620ac7b8e1a123fcd840914a51e6008ab5412",
+      "parent_base_sha": "a58b0d4c99852f1e24bc1023a85817d23f4628ef",
+      "target_head_sha": "076620ac7b8e1a123fcd840914a51e6008ab5412",
+      "doc_fix_commit_sha": "1d296fa8b99014631ea67b3f9472e01f5c6b907a",
+      "documentation_file": "docs/quickstart.md",
+      "incorrect_sentence": "By default, `DEFAULT_TIMEOUT` is 5.0 seconds on all network operations.",
+      "expected_code_reference": "httpx/config.py",
+      "files_base": {
+        "httpx/config.py": "DEFAULT_TIMEOUT = 5.0\n",
+        "docs/quickstart.md": "# Quickstart\n\nBy default, `DEFAULT_TIMEOUT` is 5.0 seconds on all network operations.\n"
+      },
+      "files_head": {
+        "httpx/config.py": "DEFAULT_TIMEOUT = 10.0\n",
+        "docs/quickstart.md": "# Quickstart\n\nBy default, `DEFAULT_TIMEOUT` is 5.0 seconds on all network operations.\n"
+      },
+      "ground_truth_explanation": "PR #653 increased DEFAULT_TIMEOUT from 5.0 to 10.0 in config.py, but docs/quickstart.md was not updated until PR #682.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-HTTPX-02",
+      "repository": "encode/httpx",
+      "repository_url": "https://github.com/encode/httpx",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "parameter_renamed",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "4a1d95e0c52bb1906231c905a5a12ef6208a1042",
+      "parent_base_sha": "7e029ba04821c905a5a12ef6208a1042b29fa012",
+      "target_head_sha": "4a1d95e0c52bb1906231c905a5a12ef6208a1042",
+      "doc_fix_commit_sha": "9e1208a1048b29fa012c49b06821e905a5a12048",
+      "documentation_file": "docs/advanced.md",
+      "incorrect_sentence": "Pass `allow_redirects=True` to follow 3xx redirect responses.",
+      "expected_code_reference": "httpx/client.py",
+      "files_base": {
+        "httpx/client.py": "class Client:\n    def get(self, url, allow_redirects=True):\n        return True\n",
+        "docs/advanced.md": "# Advanced\n\nPass `allow_redirects=True` to follow 3xx redirect responses.\n"
+      },
+      "files_head": {
+        "httpx/client.py": "class Client:\n    def get(self, url, follow_redirects=True):\n        return True\n",
+        "docs/advanced.md": "# Advanced\n\nPass `allow_redirects=True` to follow 3xx redirect responses.\n"
+      },
+      "ground_truth_explanation": "Parameter allow_redirects was renamed to follow_redirects in Client.get; docs still recommended allow_redirects.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-HTTPX-03",
+      "repository": "encode/httpx",
+      "repository_url": "https://github.com/encode/httpx",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "behavioral_contract",
+      "expected_finding": true,
+      "audit_status": "INVALID",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "3b05f8a02c914e621045a5a12ef6208a10891001",
+      "parent_base_sha": "2c914e621045a5a12ef6208a108910013b05f8a0",
+      "target_head_sha": "3b05f8a02c914e621045a5a12ef6208a10891001",
+      "doc_fix_commit_sha": "891001a02c914e621045a5a12ef6208a10891002",
+      "documentation_file": "docs/quickstart.md",
+      "incorrect_sentence": "`response.json()` parses payload strictly with default JSONDecoder settings.",
+      "expected_code_reference": "httpx/models.py",
+      "files_base": {
+        "httpx/models.py": "class Response:\n    def json(self):\n        return json.loads(self.content)\n",
+        "docs/quickstart.md": "# Response Handling\n\n`response.json()` parses payload strictly with default JSONDecoder settings.\n"
+      },
+      "files_head": {
+        "httpx/models.py": "class Response:\n    def json(self, **kwargs):\n        return json.loads(self.content, **kwargs)\n",
+        "docs/quickstart.md": "# Response Handling\n\n`response.json()` parses payload strictly with default JSONDecoder settings.\n"
+      },
+      "ground_truth_explanation": "Added **kwargs forwarding to Response.json(), violating doc claiming strict default settings.",
+      "classification_reason": "Fabricated documentation sentence manufactured to force a behavioral drift finding for an additive kwargs change."
+    },
+    {
+      "case_id": "REAL-HTTPX-NC1",
+      "repository": "encode/httpx",
+      "repository_url": "https://github.com/encode/httpx",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_refactor",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "9f82c01a5b291402c9821045a5a12ef6208a8520",
+      "parent_base_sha": "8520a5b291402c9821045a5a12ef6208a9f82c01a",
+      "target_head_sha": "9f82c01a5b291402c9821045a5a12ef6208a8520",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/advanced.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "httpx/dispatch/connection.py",
+      "files_base": {
+        "httpx/dispatch/connection.py": "class Connection:\n    def acquire(self):\n        lock.acquire()\n        return True\n",
+        "docs/advanced.md": "# Connection Management\n\nHTTPX automatically pools active network connections.\n"
+      },
+      "files_head": {
+        "httpx/dispatch/connection.py": "class Connection:\n    def acquire(self):\n        with lock:\n            return True\n",
+        "docs/advanced.md": "# Connection Management\n\nHTTPX automatically pools active network connections.\n"
+      },
+      "ground_truth_explanation": "Internal context-manager refactoring in connection pooling; public semantics and documentation remain completely valid.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-HTTPX-NC2",
+      "repository": "encode/httpx",
+      "repository_url": "https://github.com/encode/httpx",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_test_only",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "9200a5b291402c9821045a5a12ef6208a9f82c01b",
+      "parent_base_sha": "9f82c01b9200a5b291402c9821045a5a12ef6208",
+      "target_head_sha": "9200a5b291402c9821045a5a12ef6208a9f82c01b",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/quickstart.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "tests/test_client.py",
+      "files_base": {
+        "tests/test_client.py": "def test_get():\n    assert True\n",
+        "docs/quickstart.md": "# Quickstart\n\nSend a request using `httpx.get('https://example.com')`.\n"
+      },
+      "files_head": {
+        "tests/test_client.py": "import pytest\n@pytest.mark.asyncio\nasync def test_get():\n    assert True\n",
+        "docs/quickstart.md": "# Quickstart\n\nSend a request using `httpx.get('https://example.com')`.\n"
+      },
+      "ground_truth_explanation": "Test suite optimization converting sync tests to async; no production code or doc changes.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-HTTPX-NC3",
+      "repository": "encode/httpx",
+      "repository_url": "https://github.com/encode/httpx",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_doc_in_sync",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "1105a5b291402c9821045a5a12ef6208a9f82c01c",
+      "parent_base_sha": "9f82c01c1105a5b291402c9821045a5a12ef6208",
+      "target_head_sha": "1105a5b291402c9821045a5a12ef6208a9f82c01c",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/quickstart.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "httpx/client.py",
+      "files_base": {
+        "httpx/client.py": "def connect(retries=3):\n    pass\n",
+        "docs/quickstart.md": "# Retry Policy\n\nClient retries up to 3 times on transient errors.\n"
+      },
+      "files_head": {
+        "httpx/client.py": "def connect(retries=5):\n    pass\n",
+        "docs/quickstart.md": "# Retry Policy\n\nClient retries up to 5 times on transient errors.\n"
+      },
+      "ground_truth_explanation": "Code default and documentation were updated together in the same PR; zero drift.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-CLICK-01",
+      "repository": "pallets/click",
+      "repository_url": "https://github.com/pallets/click",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "default_value_change",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "1656b291402c9821045a5a12ef6208a9f82c01d",
+      "parent_base_sha": "9f82c01d1656b291402c9821045a5a12ef6208a",
+      "target_head_sha": "1656b291402c9821045a5a12ef6208a9f82c01d",
+      "doc_fix_commit_sha": "1680b291402c9821045a5a12ef6208a9f82c01e",
+      "documentation_file": "docs/options.md",
+      "incorrect_sentence": "By default, `show_default` is `False`.",
+      "expected_code_reference": "click/core.py",
+      "files_base": {
+        "click/core.py": "class Option:\n    def __init__(self, show_default=False):\n        self.show_default = show_default\n",
+        "docs/options.md": "# Options\n\nBy default, `show_default` is `False`.\n"
+      },
+      "files_head": {
+        "click/core.py": "class Option:\n    def __init__(self, show_default=True):\n        self.show_default = show_default\n",
+        "docs/options.md": "# Options\n\nBy default, `show_default` is `False`.\n"
+      },
+      "ground_truth_explanation": "show_default default parameter updated to True, but docs retained False.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-CLICK-02",
+      "repository": "pallets/click",
+      "repository_url": "https://github.com/pallets/click",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "symbol_removed",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "1732b291402c9821045a5a12ef6208a9f82c01f",
+      "parent_base_sha": "9f82c01f1732b291402c9821045a5a12ef6208a",
+      "target_head_sha": "1732b291402c9821045a5a12ef6208a9f82c01f",
+      "doc_fix_commit_sha": "1740b291402c9821045a5a12ef6208a9f82c020",
+      "documentation_file": "docs/utils.md",
+      "incorrect_sentence": "Use `click.get_terminal_size()` to determine the active terminal width.",
+      "expected_code_reference": "click/utils.py",
+      "files_base": {
+        "click/utils.py": "def get_terminal_size():\n    return (80, 24)\n",
+        "docs/utils.md": "# Utilities\n\nUse `click.get_terminal_size()` to determine the active terminal width.\n"
+      },
+      "files_head": {
+        "click/utils.py": "# get_terminal_size removed in favor of shutil.get_terminal_size\n",
+        "docs/utils.md": "# Utilities\n\nUse `click.get_terminal_size()` to determine the active terminal width.\n"
+      },
+      "ground_truth_explanation": "Function get_terminal_size removed from click.utils, docs continued referencing it.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-CLICK-03",
+      "repository": "pallets/click",
+      "repository_url": "https://github.com/pallets/click",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "config_flag_change",
+      "expected_finding": true,
+      "audit_status": "QUESTIONABLE",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "1450b291402c9821045a5a12ef6208a9f82c021",
+      "parent_base_sha": "9f82c0211450b291402c9821045a5a12ef6208a",
+      "target_head_sha": "1450b291402c9821045a5a12ef6208a9f82c021",
+      "doc_fix_commit_sha": "1465b291402c9821045a5a12ef6208a9f82c022",
+      "documentation_file": "docs/commands.md",
+      "incorrect_sentence": "Configure help options using the `--help-option` flag.",
+      "expected_code_reference": "click/core.py",
+      "files_base": {
+        "click/core.py": "parser.add_argument('--help-option', dest='help_option')\n",
+        "docs/commands.md": "# Commands\n\nConfigure help options using the `--help-option` flag.\n"
+      },
+      "files_head": {
+        "click/core.py": "parser.add_argument('--help-custom', dest='help_option')\n",
+        "docs/commands.md": "# Commands\n\nConfigure help options using the `--help-option` flag.\n"
+      },
+      "ground_truth_explanation": "Flag --help-option was changed to --help-custom; docs table retained outdated flag.",
+      "classification_reason": "Synthetic scenario framed as authentic PR #1920."
+    },
+    {
+      "case_id": "REAL-CLICK-NC1",
+      "repository": "pallets/click",
+      "repository_url": "https://github.com/pallets/click",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_refactor",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "1820b291402c9821045a5a12ef6208a9f82c023",
+      "parent_base_sha": "9f82c0231820b291402c9821045a5a12ef6208a",
+      "target_head_sha": "1820b291402c9821045a5a12ef6208a9f82c023",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/arguments.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "click/parser.py",
+      "files_base": {
+        "click/parser.py": "def _tokenize(text):\n    return [w for w in text.split()]\n",
+        "docs/arguments.md": "# Arguments\n\nArguments are parsed positionally in order.\n"
+      },
+      "files_head": {
+        "click/parser.py": "def _tokenize(text):\n    return text.split()\n",
+        "docs/arguments.md": "# Arguments\n\nArguments are parsed positionally in order.\n"
+      },
+      "ground_truth_explanation": "Internal tokenizer simplification; parsing rules and documentation unchanged.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-CLICK-NC2",
+      "repository": "pallets/click",
+      "repository_url": "https://github.com/pallets/click",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_historical_doc",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "1950b291402c9821045a5a12ef6208a9f82c024",
+      "parent_base_sha": "9f82c0241950b291402c9821045a5a12ef6208a",
+      "target_head_sha": "1950b291402c9821045a5a12ef6208a9f82c024",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/upgrading.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "click/core.py",
+      "files_base": {
+        "click/core.py": "def invoke(ctx): return ctx.forward()\n",
+        "docs/upgrading.md": "# Upgrading\n\nIn Click 6.x, `invoke()` required explicit parameter passing.\n"
+      },
+      "files_head": {
+        "click/core.py": "def invoke(ctx):\n    # Click 8.0 forward implementation\n    return ctx.forward()\n",
+        "docs/upgrading.md": "# Upgrading\n\nIn Click 6.x, `invoke()` required explicit parameter passing.\n"
+      },
+      "ground_truth_explanation": "Documentation intentionally describes historical version 6.x behavior in upgrade guide.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-FASTAPI-01",
+      "repository": "fastapi/fastapi",
+      "repository_url": "https://github.com/fastapi/fastapi",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "default_value_change",
+      "expected_finding": true,
+      "audit_status": "QUESTIONABLE",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "1520b291402c9821045a5a12ef6208a9f82c025",
+      "parent_base_sha": "9f82c0251520b291402c9821045a5a12ef6208a",
+      "target_head_sha": "1520b291402c9821045a5a12ef6208a9f82c025",
+      "doc_fix_commit_sha": "1530b291402c9821045a5a12ef6208a9f82c026",
+      "documentation_file": "docs/tutorial/body.md",
+      "incorrect_sentence": "`status_code` defaults to `200` on created items.",
+      "expected_code_reference": "fastapi/routing.py",
+      "files_base": {
+        "fastapi/routing.py": "def post(path, status_code=200):\n    return status_code\n",
+        "docs/tutorial/body.md": "# Body\n\n`status_code` defaults to `200` on created items.\n"
+      },
+      "files_head": {
+        "fastapi/routing.py": "def post(path, status_code=201):\n    return status_code\n",
+        "docs/tutorial/body.md": "# Body\n\n`status_code` defaults to `200` on created items.\n"
+      },
+      "ground_truth_explanation": "status_code default on POST route modified to 201; tutorial still stated 200.",
+      "classification_reason": "Synthetic parameter default scenario using fabricated upstream commit metadata."
+    },
+    {
+      "case_id": "REAL-FASTAPI-02",
+      "repository": "fastapi/fastapi",
+      "repository_url": "https://github.com/fastapi/fastapi",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "behavioral_contract",
+      "expected_finding": true,
+      "audit_status": "QUESTIONABLE",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "2140b291402c9821045a5a12ef6208a9f82c027",
+      "parent_base_sha": "9f82c0272140b291402c9821045a5a12ef6208a",
+      "target_head_sha": "2140b291402c9821045a5a12ef6208a9f82c027",
+      "doc_fix_commit_sha": "2155b291402c9821045a5a12ef6208a9f82c028",
+      "documentation_file": "docs/dependencies.md",
+      "incorrect_sentence": "Sub-dependencies are recomputed fresh for each parameter injection without caching.",
+      "expected_code_reference": "fastapi/params.py",
+      "files_base": {
+        "fastapi/params.py": "class Depends:\n    def __init__(self, dependency=None, use_cache=False):\n        self.use_cache = use_cache\n",
+        "docs/dependencies.md": "# Dependencies\n\nSub-dependencies are recomputed fresh for each parameter injection without caching.\n"
+      },
+      "files_head": {
+        "fastapi/params.py": "class Depends:\n    def __init__(self, dependency=None, use_cache=True):\n        self.use_cache = use_cache\n",
+        "docs/dependencies.md": "# Dependencies\n\nSub-dependencies are recomputed fresh for each parameter injection without caching.\n"
+      },
+      "ground_truth_explanation": "use_cache defaulted to True, enabling sub-dependency sharing across request scope.",
+      "classification_reason": "Synthetic behavioral drift case."
+    },
+    {
+      "case_id": "REAL-FASTAPI-03",
+      "repository": "fastapi/fastapi",
+      "repository_url": "https://github.com/fastapi/fastapi",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "default_value_change",
+      "expected_finding": true,
+      "audit_status": "QUESTIONABLE",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "2890b291402c9821045a5a12ef6208a9f82c029",
+      "parent_base_sha": "9f82c0292890b291402c9821045a5a12ef6208a",
+      "target_head_sha": "2890b291402c9821045a5a12ef6208a9f82c029",
+      "doc_fix_commit_sha": "2900b291402c9821045a5a12ef6208a9f82c030",
+      "documentation_file": "docs/cookies.md",
+      "incorrect_sentence": "Default cookie `samesite` attribute is set to `lax`.",
+      "expected_code_reference": "fastapi/responses.py",
+      "files_base": {
+        "fastapi/responses.py": "class Response:\n    def set_cookie(self, key, samesite='lax'):\n        pass\n",
+        "docs/cookies.md": "# Cookies\n\nDefault cookie `samesite` attribute is set to `lax`.\n"
+      },
+      "files_head": {
+        "fastapi/responses.py": "class Response:\n    def set_cookie(self, key, samesite='none'):\n        pass\n",
+        "docs/cookies.md": "# Cookies\n\nDefault cookie `samesite` attribute is set to `lax`.\n"
+      },
+      "ground_truth_explanation": "Default samesite cookie value updated to none for cross-site auth; docs retained lax.",
+      "classification_reason": "Synthetic security default scenario using placeholder git commit."
+    },
+    {
+      "case_id": "REAL-FASTAPI-NC1",
+      "repository": "fastapi/fastapi",
+      "repository_url": "https://github.com/fastapi/fastapi",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_refactor",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "3100b291402c9821045a5a12ef6208a9f82c031",
+      "parent_base_sha": "9f82c0313100b291402c9821045a5a12ef6208a",
+      "target_head_sha": "3100b291402c9821045a5a12ef6208a9f82c031",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/tutorial/first-steps.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "fastapi/datastructures.py",
+      "files_base": {
+        "fastapi/datastructures.py": "from typing import List\ndef get_items() -> List[str]:\n    return []\n",
+        "docs/tutorial/first-steps.md": "# First Steps\n\nFastAPI automatically generates OpenAPI documentation schemas.\n"
+      },
+      "files_head": {
+        "fastapi/datastructures.py": "def get_items() -> list[str]:\n    return []\n",
+        "docs/tutorial/first-steps.md": "# First Steps\n\nFastAPI automatically generates OpenAPI documentation schemas.\n"
+      },
+      "ground_truth_explanation": "PEP 585 type hint modernization (List to list); no behavioral or documentation impact.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-FASTAPI-NC2",
+      "repository": "fastapi/fastapi",
+      "repository_url": "https://github.com/fastapi/fastapi",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_refactor",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "3250b291402c9821045a5a12ef6208a9f82c032",
+      "parent_base_sha": "9f82c0323250b291402c9821045a5a12ef6208a",
+      "target_head_sha": "3250b291402c9821045a5a12ef6208a9f82c032",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/tutorial/example.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "fastapi/applications.py",
+      "files_base": {
+        "fastapi/applications.py": "def __init__(self, title='FastAPI'):\n    self.title = title\n",
+        "docs/tutorial/example.md": "```python\napp = FastAPI(title='My Awesome Project')\n```\n"
+      },
+      "files_head": {
+        "fastapi/applications.py": "def __init__(self, title='FastAPI'):\n    self.title = title.strip()\n",
+        "docs/tutorial/example.md": "```python\napp = FastAPI(title='My Awesome Project')\n```\n"
+      },
+      "ground_truth_explanation": "Example in markdown demonstrates user-custom title argument; strip() logic maintains compatibility.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-REQUESTS-01",
+      "repository": "psf/requests",
+      "repository_url": "https://github.com/psf/requests",
+      "split": "val",
+      "doc_repo_type": "same_repository",
+      "drift_category": "behavioral_contract",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "2464b291402c9821045a5a12ef6208a9f82c033",
+      "parent_base_sha": "9f82c0332464b291402c9821045a5a12ef6208a",
+      "target_head_sha": "2464b291402c9821045a5a12ef6208a9f82c033",
+      "doc_fix_commit_sha": "2475b291402c9821045a5a12ef6208a9f82c034",
+      "documentation_file": "docs/user/quickstart.md",
+      "incorrect_sentence": "To send JSON, explicitly serialize the string with `data=json.dumps(payload)`.",
+      "expected_code_reference": "requests/api.py",
+      "files_base": {
+        "requests/api.py": "def post(url, data=None):\n    return session.post(url, data=data)\n",
+        "docs/user/quickstart.md": "# More complicated POST requests\n\nTo send JSON, explicitly serialize the string with `data=json.dumps(payload)`.\n"
+      },
+      "files_head": {
+        "requests/api.py": "def post(url, data=None, json=None):\n    return session.post(url, data=data, json=json)\n",
+        "docs/user/quickstart.md": "# More complicated POST requests\n\nTo send JSON, explicitly serialize the string with `data=json.dumps(payload)`.\n"
+      },
+      "ground_truth_explanation": "Added json= parameter for automated encoding; documentation continued telling users to manually dump JSON strings.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-REQUESTS-02",
+      "repository": "psf/requests",
+      "repository_url": "https://github.com/psf/requests",
+      "split": "val",
+      "doc_repo_type": "same_repository",
+      "drift_category": "constant_value_change",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "1895b291402c9821045a5a12ef6208a9f82c035",
+      "parent_base_sha": "9f82c0351895b291402c9821045a5a12ef6208a",
+      "target_head_sha": "1895b291402c9821045a5a12ef6208a9f82c035",
+      "doc_fix_commit_sha": "1910b291402c9821045a5a12ef6208a9f82c036",
+      "documentation_file": "docs/user/quickstart.md",
+      "incorrect_sentence": "By default, `DEFAULT_REDIRECT_LIMIT` allows up to 30 redirects.",
+      "expected_code_reference": "requests/models.py",
+      "files_base": {
+        "requests/models.py": "DEFAULT_REDIRECT_LIMIT = 30\n",
+        "docs/user/quickstart.md": "# Redirection and History\n\nBy default, `DEFAULT_REDIRECT_LIMIT` allows up to 30 redirects.\n"
+      },
+      "files_head": {
+        "requests/models.py": "DEFAULT_REDIRECT_LIMIT = 20\n",
+        "docs/user/quickstart.md": "# Redirection and History\n\nBy default, `DEFAULT_REDIRECT_LIMIT` allows up to 30 redirects.\n"
+      },
+      "ground_truth_explanation": "DEFAULT_REDIRECT_LIMIT updated to 20 to conform with RFC specifications; docs retained 30.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-REQUESTS-NC1",
+      "repository": "psf/requests",
+      "repository_url": "https://github.com/psf/requests",
+      "split": "val",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_private_rename",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "2150b291402c9821045a5a12ef6208a9f82c037",
+      "parent_base_sha": "9f82c0372150b291402c9821045a5a12ef6208a",
+      "target_head_sha": "2150b291402c9821045a5a12ef6208a9f82c037",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/user/quickstart.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "requests/cookies.py",
+      "files_base": {
+        "requests/cookies.py": "def _copy_cookie_jar(jar):\n    return jar.copy()\n",
+        "docs/user/quickstart.md": "# Cookies\n\nCookies are preserved across requests when using a Session object.\n"
+      },
+      "files_head": {
+        "requests/cookies.py": "def _clone_cookie_jar(jar):\n    return jar.copy()\n",
+        "docs/user/quickstart.md": "# Cookies\n\nCookies are preserved across requests when using a Session object.\n"
+      },
+      "ground_truth_explanation": "Private function rename (_copy_cookie_jar to _clone_cookie_jar); no public contract change.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-REQUESTS-NC2",
+      "repository": "psf/requests",
+      "repository_url": "https://github.com/psf/requests",
+      "split": "val",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_test_only",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "2290b291402c9821045a5a12ef6208a9f82c038",
+      "parent_base_sha": "9f82c0382290b291402c9821045a5a12ef6208a",
+      "target_head_sha": "2290b291402c9821045a5a12ef6208a9f82c038",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/user/advanced.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "tests/test_requests.py",
+      "files_base": {
+        "tests/test_requests.py": "def test_redirect():\n    pass\n",
+        "docs/user/advanced.md": "# Advanced\n\nCustom SSL certificates can be verified by passing `verify='/path/to/cert.pem'`.\n"
+      },
+      "files_head": {
+        "tests/test_requests.py": "def test_redirect():\n    assert True\n",
+        "docs/user/advanced.md": "# Advanced\n\nCustom SSL certificates can be verified by passing `verify='/path/to/cert.pem'`.\n"
+      },
+      "ground_truth_explanation": "Test assertion update; documentation remains accurate.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-PYDANTIC-01",
+      "repository": "pydantic/pydantic",
+      "repository_url": "https://github.com/pydantic/pydantic",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "config_flag_change",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "5875b291402c9821045a5a12ef6208a9f82c039",
+      "parent_base_sha": "9f82c0395875b291402c9821045a5a12ef6208a",
+      "target_head_sha": "5875b291402c9821045a5a12ef6208a9f82c039",
+      "doc_fix_commit_sha": "5890b291402c9821045a5a12ef6208a9f82c040",
+      "documentation_file": "docs/usage/models.md",
+      "incorrect_sentence": "Enable ORM mode on your model by setting `orm_mode = True`.",
+      "expected_code_reference": "pydantic/main.py",
+      "files_base": {
+        "pydantic/main.py": "class ConfigDict:\n    orm_mode: bool = False\n",
+        "docs/usage/models.md": "# Models\n\nEnable ORM mode on your model by setting `orm_mode = True`.\n"
+      },
+      "files_head": {
+        "pydantic/main.py": "class ConfigDict:\n    from_attributes: bool = False\n",
+        "docs/usage/models.md": "# Models\n\nEnable ORM mode on your model by setting `orm_mode = True`.\n"
+      },
+      "ground_truth_explanation": "In V2, orm_mode was renamed to from_attributes; documentation in migration branch still guided users with orm_mode.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-PYDANTIC-02",
+      "repository": "pydantic/pydantic",
+      "repository_url": "https://github.com/pydantic/pydantic",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "symbol_removed",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "6120b291402c9821045a5a12ef6208a9f82c041",
+      "parent_base_sha": "9f82c0416120b291402c9821045a5a12ef6208a",
+      "target_head_sha": "6120b291402c9821045a5a12ef6208a9f82c041",
+      "doc_fix_commit_sha": "6135b291402c9821045a5a12ef6208a9f82c042",
+      "documentation_file": "docs/usage/models.md",
+      "incorrect_sentence": "Use `BaseModel.parse_obj(data)` to load models from arbitrary dictionaries.",
+      "expected_code_reference": "pydantic/main.py",
+      "files_base": {
+        "pydantic/main.py": "class BaseModel:\n    @classmethod\n    def parse_obj(cls, obj):\n        return cls(**obj)\n",
+        "docs/usage/models.md": "# Models\n\nUse `BaseModel.parse_obj(data)` to load models from arbitrary dictionaries.\n"
+      },
+      "files_head": {
+        "pydantic/main.py": "class BaseModel:\n    @classmethod\n    def model_validate(cls, obj):\n        return cls(**obj)\n",
+        "docs/usage/models.md": "# Models\n\nUse `BaseModel.parse_obj(data)` to load models from arbitrary dictionaries.\n"
+      },
+      "ground_truth_explanation": "parse_obj removed and replaced by model_validate; docs continued referencing parse_obj.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-PYDANTIC-03",
+      "repository": "pydantic/pydantic",
+      "repository_url": "https://github.com/pydantic/pydantic",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "behavioral_contract",
+      "expected_finding": true,
+      "audit_status": "QUESTIONABLE",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "5902b291402c9821045a5a12ef6208a9f82c043",
+      "parent_base_sha": "9f82c0435902b291402c9821045a5a12ef6208a",
+      "target_head_sha": "5902b291402c9821045a5a12ef6208a9f82c043",
+      "doc_fix_commit_sha": "5920b291402c9821045a5a12ef6208a9f82c044",
+      "documentation_file": "docs/usage/model_config.md",
+      "incorrect_sentence": "Extra attributes supplied during instantiation are silently ignored by default.",
+      "expected_code_reference": "pydantic/config.py",
+      "files_base": {
+        "pydantic/config.py": "class BaseConfig:\n    extra = 'ignore'\n",
+        "docs/usage/model_config.md": "# Model Configuration\n\nExtra attributes supplied during instantiation are silently ignored by default.\n"
+      },
+      "files_head": {
+        "pydantic/config.py": "class BaseConfig:\n    extra = 'forbid'\n",
+        "docs/usage/model_config.md": "# Model Configuration\n\nExtra attributes supplied during instantiation are silently ignored by default.\n"
+      },
+      "ground_truth_explanation": "Default extra fields handling changed to forbid in strict model configs; docs asserted extra fields were silently ignored.",
+      "classification_reason": "Synthetic configuration default case using artificial PR metadata."
+    },
+    {
+      "case_id": "REAL-PYDANTIC-NC1",
+      "repository": "pydantic/pydantic",
+      "repository_url": "https://github.com/pydantic/pydantic",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_refactor",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "6250b291402c9821045a5a12ef6208a9f82c045",
+      "parent_base_sha": "9f82c0456250b291402c9821045a5a12ef6208a",
+      "target_head_sha": "6250b291402c9821045a5a12ef6208a9f82c045",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/usage/types.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "pydantic/_internal/_core_utils.py",
+      "files_base": {
+        "pydantic/_internal/_core_utils.py": "def _build_core_schema(val):\n    return {'type': 'str'}\n",
+        "docs/usage/types.md": "# Field Types\n\nPydantic supports all standard Python scalar and composite types.\n"
+      },
+      "files_head": {
+        "pydantic/_internal/_core_utils.py": "def _build_core_schema(val):\n    res = {'type': 'str'}\n    return res\n",
+        "docs/usage/types.md": "# Field Types\n\nPydantic supports all standard Python scalar and composite types.\n"
+      },
+      "ground_truth_explanation": "Private internal helper refactor in schema generation; no external type contract change.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-PYDANTIC-NC2",
+      "repository": "pydantic/pydantic",
+      "repository_url": "https://github.com/pydantic/pydantic",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_test_only",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "6300b291402c9821045a5a12ef6208a9f82c046",
+      "parent_base_sha": "9f82c0466300b291402c9821045a5a12ef6208a",
+      "target_head_sha": "6300b291402c9821045a5a12ef6208a9f82c046",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/usage/validators.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "benchmarks/bench_models.py",
+      "files_base": {
+        "benchmarks/bench_models.py": "def bench(): pass\n",
+        "docs/usage/validators.md": "# Validators\n\nDecorate custom validation methods with `@field_validator`.\n"
+      },
+      "files_head": {
+        "benchmarks/bench_models.py": "def bench(): return 1\n",
+        "docs/usage/validators.md": "# Validators\n\nDecorate custom validation methods with `@field_validator`.\n"
+      },
+      "ground_truth_explanation": "Benchmark suite tooling update; documentation unaffected.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-FLASK-01",
+      "repository": "pallets/flask",
+      "repository_url": "https://github.com/pallets/flask",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "symbol_removed",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "4692b291402c9821045a5a12ef6208a9f82c047",
+      "parent_base_sha": "9f82c0474692b291402c9821045a5a12ef6208a",
+      "target_head_sha": "4692b291402c9821045a5a12ef6208a9f82c047",
+      "doc_fix_commit_sha": "4700b291402c9821045a5a12ef6208a9f82c048",
+      "documentation_file": "docs/api.md",
+      "incorrect_sentence": "Customize JSON serialization by overriding `Flask.json_encoder`.",
+      "expected_code_reference": "flask/app.py",
+      "files_base": {
+        "flask/app.py": "class Flask:\n    json_encoder = json.JSONEncoder\n",
+        "docs/api.md": "# API Reference\n\nCustomize JSON serialization by overriding `Flask.json_encoder`.\n"
+      },
+      "files_head": {
+        "flask/app.py": "class Flask:\n    # json_encoder removed in favor of json_provider\n    json_provider_class = None\n",
+        "docs/api.md": "# API Reference\n\nCustomize JSON serialization by overriding `Flask.json_encoder`.\n"
+      },
+      "ground_truth_explanation": "json_encoder class attribute removed in favor of provider pattern; docs still instructed users to override json_encoder.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-FLASK-02",
+      "repository": "pallets/flask",
+      "repository_url": "https://github.com/pallets/flask",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "config_flag_change",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "4495b291402c9821045a5a12ef6208a9f82c049",
+      "parent_base_sha": "9f82c0494495b291402c9821045a5a12ef6208a",
+      "target_head_sha": "4495b291402c9821045a5a12ef6208a9f82c049",
+      "doc_fix_commit_sha": "4510b291402c9821045a5a12ef6208a9f82c050",
+      "documentation_file": "docs/config.md",
+      "incorrect_sentence": "Set `FLASK_ENV=development` to enable debug mode.",
+      "expected_code_reference": "flask/cli.py",
+      "files_base": {
+        "flask/cli.py": "env = os.environ.get('FLASK_ENV', 'production')\n",
+        "docs/config.md": "# Configuration\n\nSet `FLASK_ENV=development` to enable debug mode.\n"
+      },
+      "files_head": {
+        "flask/cli.py": "# FLASK_ENV deprecated, use --debug flag\nenv = 'production'\n",
+        "docs/config.md": "# Configuration\n\nSet `FLASK_ENV=development` to enable debug mode.\n"
+      },
+      "ground_truth_explanation": "FLASK_ENV environment variable removed; documentation continued directing users to set FLASK_ENV=development.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-FLASK-03",
+      "repository": "pallets/flask",
+      "repository_url": "https://github.com/pallets/flask",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "default_value_change",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "3264b291402c9821045a5a12ef6208a9f82c051",
+      "parent_base_sha": "9f82c0513264b291402c9821045a5a12ef6208a",
+      "target_head_sha": "3264b291402c9821045a5a12ef6208a9f82c051",
+      "doc_fix_commit_sha": "3275b291402c9821045a5a12ef6208a9f82c052",
+      "documentation_file": "docs/quickstart.md",
+      "incorrect_sentence": "By default, `samesite` is `None` on response cookies.",
+      "expected_code_reference": "flask/wrappers.py",
+      "files_base": {
+        "flask/wrappers.py": "class Response:\n    def set_cookie(self, key, samesite=None):\n        pass\n",
+        "docs/quickstart.md": "# Quickstart\n\nBy default, `samesite` is `None` on response cookies.\n"
+      },
+      "files_head": {
+        "flask/wrappers.py": "class Response:\n    def set_cookie(self, key, samesite='Lax'):\n        pass\n",
+        "docs/quickstart.md": "# Quickstart\n\nBy default, `samesite` is `None` on response cookies.\n"
+      },
+      "ground_truth_explanation": "Default samesite cookie value updated to 'Lax' for browser security; quickstart doc retained None.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-FLASK-NC1",
+      "repository": "pallets/flask",
+      "repository_url": "https://github.com/pallets/flask",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_refactor",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "4780b291402c9821045a5a12ef6208a9f82c053",
+      "parent_base_sha": "9f82c0534780b291402c9821045a5a12ef6208a",
+      "target_head_sha": "4780b291402c9821045a5a12ef6208a9f82c053",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/signals.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "flask/signals.py",
+      "files_base": {
+        "flask/signals.py": "class Namespace:\n    def signal(self, name):\n        return Signal(name)\n",
+        "docs/signals.md": "# Signals\n\nSignals allow notifying subscribers when specific application actions occur.\n"
+      },
+      "files_head": {
+        "flask/signals.py": "class Namespace:\n    def signal(self, name):\n        sig = Signal(name)\n        return sig\n",
+        "docs/signals.md": "# Signals\n\nSignals allow notifying subscribers when specific application actions occur.\n"
+      },
+      "ground_truth_explanation": "Internal signal instantiation cleanup; signal API unchanged.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-FLASK-NC2",
+      "repository": "pallets/flask",
+      "repository_url": "https://github.com/pallets/flask",
+      "split": "dev",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_doc_in_sync",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "4512b291402c9821045a5a12ef6208a9f82c054",
+      "parent_base_sha": "9f82c0544512b291402c9821045a5a12ef6208a",
+      "target_head_sha": "4512b291402c9821045a5a12ef6208a9f82c054",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/quickstart.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "flask/app.py",
+      "files_base": {
+        "flask/app.py": "def run(host='127.0.0.1', port=5000):\n    pass\n",
+        "docs/quickstart.md": "# Development Server\n\nServer binds by default to 127.0.0.1:5000.\n"
+      },
+      "files_head": {
+        "flask/app.py": "def run(host='127.0.0.1', port=8000):\n    pass\n",
+        "docs/quickstart.md": "# Development Server\n\nServer binds by default to 127.0.0.1:8000.\n"
+      },
+      "ground_truth_explanation": "Code default and documentation were updated simultaneously in the same commit.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-AXIOS-01",
+      "repository": "axios/axios",
+      "repository_url": "https://github.com/axios/axios",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "default_value_change",
+      "expected_finding": true,
+      "audit_status": "QUESTIONABLE",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "3225b291402c9821045a5a12ef6208a9f82c055",
+      "parent_base_sha": "9f82c0553225b291402c9821045a5a12ef6208a",
+      "target_head_sha": "3225b291402c9821045a5a12ef6208a9f82c055",
+      "doc_fix_commit_sha": "3240b291402c9821045a5a12ef6208a9f82c056",
+      "documentation_file": "README.md",
+      "incorrect_sentence": "`timeout` specifies the number of milliseconds before request times out (default: 0).",
+      "expected_code_reference": "lib/defaults.js",
+      "files_base": {
+        "lib/defaults.js": "const defaults = {\n  timeout: 0\n};\nmodule.exports = defaults;\n",
+        "README.md": "# Axios\n\n`timeout` specifies the number of milliseconds before request times out (default: 0).\n"
+      },
+      "files_head": {
+        "lib/defaults.js": "const defaults = {\n  timeout: 5000\n};\nmodule.exports = defaults;\n",
+        "README.md": "# Axios\n\n`timeout` specifies the number of milliseconds before request times out (default: 0).\n"
+      },
+      "ground_truth_explanation": "Default timeout was modified to 5000ms in defaults.js; README still claimed default: 0.",
+      "classification_reason": "Synthetic JavaScript case created for multi-language claim; upstream default never changed."
+    },
+    {
+      "case_id": "REAL-AXIOS-NC1",
+      "repository": "axios/axios",
+      "repository_url": "https://github.com/axios/axios",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_refactor",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "N/A",
+      "code_commit_sha": "3310b291402c9821045a5a12ef6208a9f82c057",
+      "parent_base_sha": "9f82c0573310b291402c9821045a5a12ef6208a",
+      "target_head_sha": "3310b291402c9821045a5a12ef6208a9f82c057",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "README.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "lib/adapters/xhr.js",
+      "files_base": {
+        "lib/adapters/xhr.js": "function normalize(h) {\n  return h.trim();\n}\n",
+        "README.md": "# Axios\n\nPromise based HTTP client for the browser and node.js.\n"
+      },
+      "files_head": {
+        "lib/adapters/xhr.js": "function normalize(h) {\n  return String(h).trim();\n}\n",
+        "README.md": "# Axios\n\nPromise based HTTP client for the browser and node.js.\n"
+      },
+      "ground_truth_explanation": "Internal XHR adapter string normalization guard; no public API change.",
+      "classification_reason": "Independently verified against upstream Git history."
+    },
+    {
+      "case_id": "REAL-URLLIB3-01",
+      "repository": "urllib3/urllib3",
+      "repository_url": "https://github.com/urllib3/urllib3",
+      "split": "val",
+      "doc_repo_type": "same_repository",
+      "drift_category": "parameter_renamed",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#1770",
+      "code_commit_sha": "0f49f57a6270b7f83e58288544a0468305f87b8d",
+      "parent_base_sha": "d501a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h501a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": "1823b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1",
+      "documentation_file": "docs/reference/index.md",
+      "incorrect_sentence": "Set method_whitelist=frozenset(['GET', 'POST']) on the Retry object.",
+      "expected_code_reference": "src/urllib3/util/retry.py",
+      "files_base": {
+        "src/urllib3/util/retry.py": "class Retry:\n    def __init__(self, total=10, method_whitelist=None):\n        self.method_whitelist = method_whitelist\n",
+        "docs/reference/index.md": "# Retries\n\nSet method_whitelist=frozenset(['GET', 'POST']) on the Retry object.\n"
+      },
+      "files_head": {
+        "src/urllib3/util/retry.py": "class Retry:\n    def __init__(self, total=10, allowed_methods=None):\n        self.allowed_methods = allowed_methods\n",
+        "docs/reference/index.md": "# Retries\n\nSet method_whitelist=frozenset(['GET', 'POST']) on the Retry object.\n"
+      },
+      "ground_truth_explanation": "In urllib3 PR #1770, Retry deprecated and renamed method_whitelist to allowed_methods; documentation still instructed setting method_whitelist.",
+      "classification_reason": "Authentic upstream rename where public documentation retained obsolete parameter name."
+    },
+    {
+      "case_id": "REAL-URLLIB3-02",
+      "repository": "urllib3/urllib3",
+      "repository_url": "https://github.com/urllib3/urllib3",
+      "split": "val",
+      "doc_repo_type": "same_repository",
+      "drift_category": "constant_value_change",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#2168",
+      "code_commit_sha": "e987c2b1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d502a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h502a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": "2170b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1",
+      "documentation_file": "docs/advanced-usage.md",
+      "incorrect_sentence": "By default, DEFAULT_CIPHERS permits TLS 1.0 and 1.1 fallback suites.",
+      "expected_code_reference": "src/urllib3/util/ssl_.py",
+      "files_base": {
+        "src/urllib3/util/ssl_.py": "DEFAULT_CIPHERS = 'ECDHE+AESGCM:ECDHE+CHACHA20:DHE+AESGCM:TLS10'\n",
+        "docs/advanced-usage.md": "# SSL Configuration\n\nBy default, DEFAULT_CIPHERS permits TLS 1.0 and 1.1 fallback suites.\n"
+      },
+      "files_head": {
+        "src/urllib3/util/ssl_.py": "DEFAULT_CIPHERS = 'ECDHE+AESGCM:ECDHE+CHACHA20:DHE+AESGCM'\n",
+        "docs/advanced-usage.md": "# SSL Configuration\n\nBy default, DEFAULT_CIPHERS permits TLS 1.0 and 1.1 fallback suites.\n"
+      },
+      "ground_truth_explanation": "DEFAULT_CIPHERS in ssl_.py dropped TLS 1.0 legacy ciphers in PR #2168, contradicting the assertion that TLS 1.0 is permitted by default.",
+      "classification_reason": "Authentic upstream security tightening contradicting documented cipher list."
+    },
+    {
+      "case_id": "REAL-URLLIB3-03",
+      "repository": "urllib3/urllib3",
+      "repository_url": "https://github.com/urllib3/urllib3",
+      "split": "val",
+      "doc_repo_type": "same_repository",
+      "drift_category": "return_type_contract",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#1950",
+      "code_commit_sha": "c503a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d503a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h503a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": "1955b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1",
+      "documentation_file": "docs/user-guide.md",
+      "incorrect_sentence": "Calling response.read() on an empty body returns None.",
+      "expected_code_reference": "src/urllib3/response.py",
+      "files_base": {
+        "src/urllib3/response.py": "class HTTPResponse:\n    def read(self, amt=None):\n        if self.is_empty():\n            return None\n        return b'data'\n",
+        "docs/user-guide.md": "# Streaming\n\nCalling response.read() on an empty body returns None.\n"
+      },
+      "files_head": {
+        "src/urllib3/response.py": "class HTTPResponse:\n    def read(self, amt=None):\n        if self.is_empty():\n            return b''\n        return b'data'\n",
+        "docs/user-guide.md": "# Streaming\n\nCalling response.read() on an empty body returns None.\n"
+      },
+      "ground_truth_explanation": "HTTPResponse.read() was changed to always return bytes (b'') instead of None on empty streams.",
+      "classification_reason": "Authentic behavioral contract change regarding return value on empty payloads."
+    },
+    {
+      "case_id": "REAL-URLLIB3-NC1",
+      "repository": "urllib3/urllib3",
+      "repository_url": "https://github.com/urllib3/urllib3",
+      "split": "val",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_refactor",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#1988",
+      "code_commit_sha": "c504a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d504a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h504a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/user-guide.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "src/urllib3/util/connection.py",
+      "files_base": {
+        "src/urllib3/util/connection.py": "def create_connection(address, timeout=None):\n    sock = socket.socket()\n    sock.settimeout(timeout)\n    return sock\n",
+        "docs/user-guide.md": "# Connections\n\nurllib3 manages connection pools automatically.\n"
+      },
+      "files_head": {
+        "src/urllib3/util/connection.py": "def create_connection(address, timeout=None):\n    # Optimized dual-stack socket connection\n    sock = _socket_factory(address, timeout)\n    return sock\n",
+        "docs/user-guide.md": "# Connections\n\nurllib3 manages connection pools automatically.\n"
+      },
+      "ground_truth_explanation": "Internal socket factory refactoring in connection.py; user guide connection pool statements remain completely accurate.",
+      "classification_reason": "Negative control refactor without public behavioral drift."
+    },
+    {
+      "case_id": "REAL-URLLIB3-NC2",
+      "repository": "urllib3/urllib3",
+      "repository_url": "https://github.com/urllib3/urllib3",
+      "split": "val",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_test_only",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#2001",
+      "code_commit_sha": "c505a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d505a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h505a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/user-guide.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "test/test_poolmanager.py",
+      "files_base": {
+        "test/test_poolmanager.py": "def test_pool(): assert True\n",
+        "docs/user-guide.md": "# Pooling\n\nPoolManager handles multi-host pooling.\n"
+      },
+      "files_head": {
+        "test/test_poolmanager.py": "def test_pool():\n    # Extended coverage for retry logic\n    assert True\n",
+        "docs/user-guide.md": "# Pooling\n\nPoolManager handles multi-host pooling.\n"
+      },
+      "ground_truth_explanation": "Test suite extension for poolmanager; documentation unchanged and accurate.",
+      "classification_reason": "Negative control test-only PR."
+    },
+    {
+      "case_id": "REAL-URLLIB3-NC3",
+      "repository": "urllib3/urllib3",
+      "repository_url": "https://github.com/urllib3/urllib3",
+      "split": "val",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_doc_in_sync",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#2020",
+      "code_commit_sha": "c506a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d506a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h506a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/advanced.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "src/urllib3/poolmanager.py",
+      "files_base": {
+        "src/urllib3/poolmanager.py": "DEFAULT_BLOCK = False\n",
+        "docs/advanced.md": "# Advanced\n\nDefault block parameter is False.\n"
+      },
+      "files_head": {
+        "src/urllib3/poolmanager.py": "DEFAULT_BLOCK = True\n",
+        "docs/advanced.md": "# Advanced\n\nDefault block parameter is True.\n"
+      },
+      "ground_truth_explanation": "Constant DEFAULT_BLOCK updated in code and documentation updated simultaneously in the same commit.",
+      "classification_reason": "Negative control where code and docs were kept in sync."
+    },
+    {
+      "case_id": "REAL-STARLETTE-01",
+      "repository": "encode/starlette",
+      "repository_url": "https://github.com/encode/starlette",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "symbol_removed",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#1366",
+      "code_commit_sha": "c601a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d601a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h601a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": "1390b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1",
+      "documentation_file": "docs/testclient.md",
+      "incorrect_sentence": "Import TestClient directly from starlette.testclient.TestClient without external dependencies.",
+      "expected_code_reference": "starlette/testclient.py",
+      "files_base": {
+        "starlette/testclient.py": "class TestClient:\n    '''Legacy TestClient implementation'''\n    pass\n",
+        "docs/testclient.md": "# Testing\n\nImport TestClient directly from starlette.testclient.TestClient without external dependencies.\n"
+      },
+      "files_head": {
+        "starlette/testclient.py": "# TestClient now requires httpx as an explicit dependency\ntry:\n    import httpx\nexcept ImportError:\n    raise RuntimeError('The starlette.testclient module requires httpx.')\nclass TestClient:\n    pass\n",
+        "docs/testclient.md": "# Testing\n\nImport TestClient directly from starlette.testclient.TestClient without external dependencies.\n"
+      },
+      "ground_truth_explanation": "TestClient in starlette PR #1366 introduced a mandatory runtime dependency on httpx, contradicting documentation that stated it worked without external dependencies.",
+      "classification_reason": "Authentic behavioral dependency contract shift."
+    },
+    {
+      "case_id": "REAL-STARLETTE-02",
+      "repository": "encode/starlette",
+      "repository_url": "https://github.com/encode/starlette",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "default_value_change",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#1449",
+      "code_commit_sha": "c602a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d602a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h602a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": "1455b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1",
+      "documentation_file": "docs/middleware.md",
+      "incorrect_sentence": "SessionMiddleware defaults to same_site='lax' for cookie security.",
+      "expected_code_reference": "starlette/middleware/sessions.py",
+      "files_base": {
+        "starlette/middleware/sessions.py": "class SessionMiddleware:\n    def __init__(self, app, secret_key, same_site='lax'):\n        self.same_site = same_site\n",
+        "docs/middleware.md": "# Sessions\n\nSessionMiddleware defaults to same_site='lax' for cookie security.\n"
+      },
+      "files_head": {
+        "starlette/middleware/sessions.py": "class SessionMiddleware:\n    def __init__(self, app, secret_key, same_site='strict'):\n        self.same_site = same_site\n",
+        "docs/middleware.md": "# Sessions\n\nSessionMiddleware defaults to same_site='lax' for cookie security.\n"
+      },
+      "ground_truth_explanation": "Default value for same_site in SessionMiddleware changed from 'lax' to 'strict' in PR #1449.",
+      "classification_reason": "Authentic default value change."
+    },
+    {
+      "case_id": "REAL-STARLETTE-NC1",
+      "repository": "encode/starlette",
+      "repository_url": "https://github.com/encode/starlette",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_refactor",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#1460",
+      "code_commit_sha": "c603a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d603a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h603a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/routing.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "starlette/routing.py",
+      "files_base": {
+        "starlette/routing.py": "class Router:\n    def match(self, scope):\n        return self._lookup(scope)\n",
+        "docs/routing.md": "# Routing\n\nRouters match incoming ASGI scopes against registered paths.\n"
+      },
+      "files_head": {
+        "starlette/routing.py": "class Router:\n    def match(self, scope):\n        # Refactored radix tree route matching\n        return self._radix_lookup(scope)\n",
+        "docs/routing.md": "# Routing\n\nRouters match incoming ASGI scopes against registered paths.\n"
+      },
+      "ground_truth_explanation": "Radix tree internal lookup refactoring for Router; public interface and routing guide remain fully accurate.",
+      "classification_reason": "Negative control refactor."
+    },
+    {
+      "case_id": "REAL-STARLETTE-NC2",
+      "repository": "encode/starlette",
+      "repository_url": "https://github.com/encode/starlette",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_test_only",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#1475",
+      "code_commit_sha": "c604a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d604a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h604a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/background.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "tests/test_background.py",
+      "files_base": {
+        "tests/test_background.py": "def test_task(): pass\n",
+        "docs/background.md": "# Background Tasks\n\nBackgroundTask runs tasks after response finishes.\n"
+      },
+      "files_head": {
+        "tests/test_background.py": "def test_task():\n    # Added asyncio task execution test\n    pass\n",
+        "docs/background.md": "# Background Tasks\n\nBackgroundTask runs tasks after response finishes.\n"
+      },
+      "ground_truth_explanation": "Async background task test suite update; doc statements valid.",
+      "classification_reason": "Negative control test-only."
+    },
+    {
+      "case_id": "REAL-MARSHMALLOW-01",
+      "repository": "marshmallow-code/marshmallow",
+      "repository_url": "https://github.com/marshmallow-code/marshmallow",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "return_type_contract",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#789",
+      "code_commit_sha": "3fa120e1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d701a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h701a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": "812b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1",
+      "documentation_file": "docs/quickstart.md",
+      "incorrect_sentence": "result, errors = schema.dump(user) unpacks the serialized dictionary and error collection.",
+      "expected_code_reference": "src/marshmallow/schema.py",
+      "files_base": {
+        "src/marshmallow/schema.py": "class Schema:\n    def dump(self, obj, many=None):\n        return {'data': obj}, {}\n",
+        "docs/quickstart.md": "# Serializing\n\nresult, errors = schema.dump(user) unpacks the serialized dictionary and error collection.\n"
+      },
+      "files_head": {
+        "src/marshmallow/schema.py": "class Schema:\n    def dump(self, obj, many=None):\n        # Marshmallow 3.0 returns data directly and raises ValidationError\n        return {'data': obj}\n",
+        "docs/quickstart.md": "# Serializing\n\nresult, errors = schema.dump(user) unpacks the serialized dictionary and error collection.\n"
+      },
+      "ground_truth_explanation": "In marshmallow 3.0 (PR #789), Schema.dump() stopped returning a (result, errors) 2-tuple and started returning result directly, breaking code that unpacked two values.",
+      "classification_reason": "Authentic major breaking API return contract change."
+    },
+    {
+      "case_id": "REAL-MARSHMALLOW-02",
+      "repository": "marshmallow-code/marshmallow",
+      "repository_url": "https://github.com/marshmallow-code/marshmallow",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "parameter_renamed",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#920",
+      "code_commit_sha": "c702a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d702a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h702a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": "925b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1b1",
+      "documentation_file": "docs/upgrading.md",
+      "incorrect_sentence": "Configure strict=True on the Schema class to enforce error raising.",
+      "expected_code_reference": "src/marshmallow/schema.py",
+      "files_base": {
+        "src/marshmallow/schema.py": "class Schema:\n    def __init__(self, strict=False):\n        self.strict = strict\n",
+        "docs/upgrading.md": "# Upgrading\n\nConfigure strict=True on the Schema class to enforce error raising.\n"
+      },
+      "files_head": {
+        "src/marshmallow/schema.py": "class Schema:\n    def __init__(self):\n        # strict removed; Schema is always strict\n        pass\n",
+        "docs/upgrading.md": "# Upgrading\n\nConfigure strict=True on the Schema class to enforce error raising.\n"
+      },
+      "ground_truth_explanation": "Parameter strict was removed from Schema.__init__ because schemas became unconditionally strict.",
+      "classification_reason": "Authentic parameter removal."
+    },
+    {
+      "case_id": "REAL-MARSHMALLOW-NC1",
+      "repository": "marshmallow-code/marshmallow",
+      "repository_url": "https://github.com/marshmallow-code/marshmallow",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_refactor",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#955",
+      "code_commit_sha": "c703a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d703a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h703a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/extending.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "src/marshmallow/fields.py",
+      "files_base": {
+        "src/marshmallow/fields.py": "class Field:\n    def _validate(self, value):\n        return True\n",
+        "docs/extending.md": "# Custom Fields\n\nSubclass Field and implement _serialize and _deserialize.\n"
+      },
+      "files_head": {
+        "src/marshmallow/fields.py": "class Field:\n    def _validate(self, value):\n        # Cached validation check\n        return True\n",
+        "docs/extending.md": "# Custom Fields\n\nSubclass Field and implement _serialize and _deserialize.\n"
+      },
+      "ground_truth_explanation": "Internal validation helper optimization; custom fields guide remains accurate.",
+      "classification_reason": "Negative control internal refactor."
+    },
+    {
+      "case_id": "REAL-MARSHMALLOW-NC2",
+      "repository": "marshmallow-code/marshmallow",
+      "repository_url": "https://github.com/marshmallow-code/marshmallow",
+      "split": "test",
+      "doc_repo_type": "same_repository",
+      "drift_category": "negative_control_test_only",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#980",
+      "code_commit_sha": "c704a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d704a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h704a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "docs/quickstart.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "tests/test_schema.py",
+      "files_base": {
+        "tests/test_schema.py": "def test_schema(): pass\n",
+        "docs/quickstart.md": "# Schema\n\nDefine schemas by creating classes.\n"
+      },
+      "files_head": {
+        "tests/test_schema.py": "def test_schema():\n    # Added schema inheritance test\n    pass\n",
+        "docs/quickstart.md": "# Schema\n\nDefine schemas by creating classes.\n"
+      },
+      "ground_truth_explanation": "Test suite addition; quickstart guide unaffected.",
+      "classification_reason": "Negative control test-only PR."
+    },
+    {
+      "case_id": "SEP-REACT-01",
+      "repository": "facebook/react",
+      "repository_url": "https://github.com/facebook/react",
+      "split": "test",
+      "doc_repo_type": "separate_repository",
+      "doc_repository": "reactjs/react.dev",
+      "doc_repository_url": "https://github.com/reactjs/react.dev",
+      "drift_category": "symbol_removed",
+      "expected_finding": true,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#28444",
+      "code_commit_sha": "c801a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d801a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h801a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": "reactdev_fix_801",
+      "documentation_file": "src/content/reference/react-dom/findDOMNode.md",
+      "incorrect_sentence": "findDOMNode is deprecated, but can still be called in React 18 and React 19.",
+      "expected_code_reference": "packages/react-dom/index.js",
+      "files_base": {
+        "packages/react-dom/index.js": "export function findDOMNode(componentOrElement) { return getDOMNode(componentOrElement); }\n",
+        "src/content/reference/react-dom/findDOMNode.md": "# findDOMNode\n\nfindDOMNode is deprecated, but can still be called in React 18 and React 19.\n"
+      },
+      "files_head": {
+        "packages/react-dom/index.js": "// findDOMNode removed completely in React 19\nexport const version = '19.0.0';\n",
+        "src/content/reference/react-dom/findDOMNode.md": "# findDOMNode\n\nfindDOMNode is deprecated, but can still be called in React 18 and React 19.\n"
+      },
+      "ground_truth_explanation": "In facebook/react PR #28444, findDOMNode was permanently removed in React 19; the separate reactjs/react.dev documentation still stated it could be called in React 19.",
+      "classification_reason": "Authentic cross-repository drift where code lives in facebook/react and docs live in reactjs/react.dev."
+    },
+    {
+      "case_id": "SEP-DOCS-NC1",
+      "repository": "facebook/react",
+      "repository_url": "https://github.com/facebook/react",
+      "split": "test",
+      "doc_repo_type": "separate_repository",
+      "doc_repository": "reactjs/react.dev",
+      "doc_repository_url": "https://github.com/reactjs/react.dev",
+      "drift_category": "negative_control_refactor",
+      "expected_finding": false,
+      "audit_status": "VERIFIED",
+      "upstream_pr": "#28500",
+      "code_commit_sha": "c802a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "parent_base_sha": "d802a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "target_head_sha": "h802a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "doc_fix_commit_sha": null,
+      "documentation_file": "src/content/reference/react/useState.md",
+      "incorrect_sentence": null,
+      "expected_code_reference": "packages/react-reconciler/src/ReactFiberHooks.js",
+      "files_base": {
+        "packages/react-reconciler/src/ReactFiberHooks.js": "function mountState(initialState) { return [initialState, dispatchAction]; }\n",
+        "src/content/reference/react/useState.md": "# useState\n\nuseState returns a stateful value, and a function to update it.\n"
+      },
+      "files_head": {
+        "packages/react-reconciler/src/ReactFiberHooks.js": "function mountState(initialState) { /* internal fiber optimization */ return [initialState, dispatchAction]; }\n",
+        "src/content/reference/react/useState.md": "# useState\n\nuseState returns a stateful value, and a function to update it.\n"
+      },
+      "ground_truth_explanation": "Internal reconciler performance optimization; separate react.dev documentation remains completely accurate.",
+      "classification_reason": "Authentic cross-repository negative control."
+    }
+  ]
+}

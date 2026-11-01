@@ -1,0 +1,474 @@
+{
+  "deterministic_held_out": {
+    "total": 22,
+    "passed": 16,
+    "tp": 6,
+    "fp": 0,
+    "tn": 10,
+    "fn": 6,
+    "precision": 1.0,
+    "recall": 0.5,
+    "specificity": 1.0,
+    "f1": 0.6666666666666666,
+    "invocations": 0,
+    "avg_latency_ms": 237.6966097270435,
+    "cases": [
+      {
+        "case_id": "REAL-FASTAPI-01",
+        "repository": "fastapi/fastapi",
+        "drift_category": "default_value_change",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-DEFAULT-001",
+        "latency_ms": 354.97254101210274
+      },
+      {
+        "case_id": "REAL-FASTAPI-02",
+        "repository": "fastapi/fastapi",
+        "drift_category": "behavioral_contract",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 229.29479199228808
+      },
+      {
+        "case_id": "REAL-FASTAPI-03",
+        "repository": "fastapi/fastapi",
+        "drift_category": "default_value_change",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-DEFAULT-001",
+        "latency_ms": 325.999958004104
+      },
+      {
+        "case_id": "REAL-FASTAPI-NC1",
+        "repository": "fastapi/fastapi",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 298.27962498529814
+      },
+      {
+        "case_id": "REAL-FASTAPI-NC2",
+        "repository": "fastapi/fastapi",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 235.56195801938884
+      },
+      {
+        "case_id": "REAL-PYDANTIC-01",
+        "repository": "pydantic/pydantic",
+        "drift_category": "config_flag_change",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-SYMBOL-003",
+        "latency_ms": 274.2254579789005
+      },
+      {
+        "case_id": "REAL-PYDANTIC-02",
+        "repository": "pydantic/pydantic",
+        "drift_category": "symbol_removed",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-SYMBOL-003",
+        "latency_ms": 237.21275001298636
+      },
+      {
+        "case_id": "REAL-PYDANTIC-03",
+        "repository": "pydantic/pydantic",
+        "drift_category": "behavioral_contract",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 217.26329199736938
+      },
+      {
+        "case_id": "REAL-PYDANTIC-NC1",
+        "repository": "pydantic/pydantic",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 219.02508297353052
+      },
+      {
+        "case_id": "REAL-PYDANTIC-NC2",
+        "repository": "pydantic/pydantic",
+        "drift_category": "negative_control_test_only",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 215.09012501337565
+      },
+      {
+        "case_id": "REAL-AXIOS-01",
+        "repository": "axios/axios",
+        "drift_category": "default_value_change",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 216.24174999305978
+      },
+      {
+        "case_id": "REAL-AXIOS-NC1",
+        "repository": "axios/axios",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 206.04929100954905
+      },
+      {
+        "case_id": "REAL-STARLETTE-01",
+        "repository": "encode/starlette",
+        "drift_category": "symbol_removed",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 211.28233399940655
+      },
+      {
+        "case_id": "REAL-STARLETTE-02",
+        "repository": "encode/starlette",
+        "drift_category": "default_value_change",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-DEFAULT-001",
+        "latency_ms": 223.14904199447483
+      },
+      {
+        "case_id": "REAL-STARLETTE-NC1",
+        "repository": "encode/starlette",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 216.9998330064118
+      },
+      {
+        "case_id": "REAL-STARLETTE-NC2",
+        "repository": "encode/starlette",
+        "drift_category": "negative_control_test_only",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 220.47945798840374
+      },
+      {
+        "case_id": "REAL-MARSHMALLOW-01",
+        "repository": "marshmallow-code/marshmallow",
+        "drift_category": "return_type_contract",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 214.83895898563787
+      },
+      {
+        "case_id": "REAL-MARSHMALLOW-02",
+        "repository": "marshmallow-code/marshmallow",
+        "drift_category": "parameter_renamed",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-PARAM-002",
+        "latency_ms": 231.19166601100005
+      },
+      {
+        "case_id": "REAL-MARSHMALLOW-NC1",
+        "repository": "marshmallow-code/marshmallow",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 219.29708300740458
+      },
+      {
+        "case_id": "REAL-MARSHMALLOW-NC2",
+        "repository": "marshmallow-code/marshmallow",
+        "drift_category": "negative_control_test_only",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 214.90191700286232
+      },
+      {
+        "case_id": "SEP-REACT-01",
+        "repository": "facebook/react",
+        "drift_category": "symbol_removed",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 231.0027909989003
+      },
+      {
+        "case_id": "SEP-DOCS-NC1",
+        "repository": "facebook/react",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 216.96570800850168
+      }
+    ]
+  },
+  "hybrid_held_out": {
+    "total": 22,
+    "passed": 17,
+    "tp": 7,
+    "fp": 0,
+    "tn": 10,
+    "fn": 5,
+    "precision": 1.0,
+    "recall": 0.5833333333333334,
+    "specificity": 1.0,
+    "f1": 0.7368421052631579,
+    "invocations": 1,
+    "avg_latency_ms": 1531.1398181379031,
+    "cases": [
+      {
+        "case_id": "REAL-FASTAPI-01",
+        "repository": "fastapi/fastapi",
+        "drift_category": "default_value_change",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-DEFAULT-001",
+        "latency_ms": 238.3697920013219
+      },
+      {
+        "case_id": "REAL-FASTAPI-02",
+        "repository": "fastapi/fastapi",
+        "drift_category": "behavioral_contract",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 216.08241699868813
+      },
+      {
+        "case_id": "REAL-FASTAPI-03",
+        "repository": "fastapi/fastapi",
+        "drift_category": "default_value_change",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-DEFAULT-001",
+        "latency_ms": 231.71729102614336
+      },
+      {
+        "case_id": "REAL-FASTAPI-NC1",
+        "repository": "fastapi/fastapi",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 217.03191701089963
+      },
+      {
+        "case_id": "REAL-FASTAPI-NC2",
+        "repository": "fastapi/fastapi",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 215.3451659833081
+      },
+      {
+        "case_id": "REAL-PYDANTIC-01",
+        "repository": "pydantic/pydantic",
+        "drift_category": "config_flag_change",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-SYMBOL-003",
+        "latency_ms": 235.3925000061281
+      },
+      {
+        "case_id": "REAL-PYDANTIC-02",
+        "repository": "pydantic/pydantic",
+        "drift_category": "symbol_removed",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-SYMBOL-003",
+        "latency_ms": 219.98908300884068
+      },
+      {
+        "case_id": "REAL-PYDANTIC-03",
+        "repository": "pydantic/pydantic",
+        "drift_category": "behavioral_contract",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 211.79033297812566
+      },
+      {
+        "case_id": "REAL-PYDANTIC-NC1",
+        "repository": "pydantic/pydantic",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 212.41391700459644
+      },
+      {
+        "case_id": "REAL-PYDANTIC-NC2",
+        "repository": "pydantic/pydantic",
+        "drift_category": "negative_control_test_only",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 218.11008302029222
+      },
+      {
+        "case_id": "REAL-AXIOS-01",
+        "repository": "axios/axios",
+        "drift_category": "default_value_change",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 217.46208297554404
+      },
+      {
+        "case_id": "REAL-AXIOS-NC1",
+        "repository": "axios/axios",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 213.54520801105537
+      },
+      {
+        "case_id": "REAL-STARLETTE-01",
+        "repository": "encode/starlette",
+        "drift_category": "symbol_removed",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 236.10104201361537
+      },
+      {
+        "case_id": "REAL-STARLETTE-02",
+        "repository": "encode/starlette",
+        "drift_category": "default_value_change",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-DEFAULT-001",
+        "latency_ms": 233.3083339908626
+      },
+      {
+        "case_id": "REAL-STARLETTE-NC1",
+        "repository": "encode/starlette",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 216.16533401538618
+      },
+      {
+        "case_id": "REAL-STARLETTE-NC2",
+        "repository": "encode/starlette",
+        "drift_category": "negative_control_test_only",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 211.68649999890476
+      },
+      {
+        "case_id": "REAL-MARSHMALLOW-01",
+        "repository": "marshmallow-code/marshmallow",
+        "drift_category": "return_type_contract",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-BEHAVIOR-006",
+        "latency_ms": 28994.45908301277
+      },
+      {
+        "case_id": "REAL-MARSHMALLOW-02",
+        "repository": "marshmallow-code/marshmallow",
+        "drift_category": "parameter_renamed",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-PARAM-002",
+        "latency_ms": 237.75000000023283
+      },
+      {
+        "case_id": "REAL-MARSHMALLOW-NC1",
+        "repository": "marshmallow-code/marshmallow",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 221.54141598730348
+      },
+      {
+        "case_id": "REAL-MARSHMALLOW-NC2",
+        "repository": "marshmallow-code/marshmallow",
+        "drift_category": "negative_control_test_only",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 217.82625000923872
+      },
+      {
+        "case_id": "SEP-REACT-01",
+        "repository": "facebook/react",
+        "drift_category": "symbol_removed",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 231.93099998752587
+      },
+      {
+        "case_id": "SEP-DOCS-NC1",
+        "repository": "facebook/react",
+        "drift_category": "negative_control_refactor",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 237.05724999308586
+      }
+    ]
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "metadata": {
+    "version": "v0.4.0",
+    "evaluation_date": "2026-11-01T06:05:00+05:30",
+    "git_head": "90d79c6",
+    "environment": {
+      "platform": "Darwin (Apple Silicon M4)",
+      "memory": "16GB Unified Memory",
+      "python": "3.14.2",
+      "llm_backend": "Ollama local inference",
+      "model": "qwen3:8b (8.2B, Q4_K_M)"
+    },
+    "total_authentic_cases": 68,
+    "total_repositories": 15,
+    "total_negative_controls": 30,
+    "adversarial_scenarios": 10
+  },
+  "overall_authentic_benchmark": {
+    "total_cases": 68,
+    "positive_cases": 38,
+    "negative_controls": 30,
+    "deterministic": {
+      "tp": 24,
+      "fp": 0,
+      "tn": 30,
+      "fn": 14,
+      "precision": 1.0,
+      "recall": 0.6316,
+      "specificity": 1.0,
+      "f1_score": 0.7742,
+      "accuracy": 0.7941,
+      "avg_latency_ms": 234.5
+    },
+    "selective_hybrid": {
+      "tp": 30,
+      "fp": 0,
+      "tn": 30,
+      "fn": 8,
+      "precision": 1.0,
+      "recall": 0.7895,
+      "specificity": 1.0,
+      "f1_score": 0.8824,
+      "accuracy": 0.8824,
+      "total_llm_invocations": 8,
+      "llm_invocation_rate": 0.1176,
+      "incremental_ai_wins": 6,
+      "ai_incremental_recall_lift": 0.1579,
+      "ai_incremental_f1_lift": 0.1082,
+      "avg_latency_ms": 2140.2
+    }
+  },
+  "partition_breakdowns": {
+    "historical_benchmark_v03": {
+      "total_cases": 48,
+      "repositories_count": 11,
+      "positive_cases": 26,
+      "negative_controls": 22,
+      "deterministic": {
+        "tp": 16,
+        "fp": 0,
+        "tn": 22,
+        "fn": 10,
+        "precision": 1.0,
+        "recall": 0.6154,
+        "specificity": 1.0,
+        "f1_score": 0.7619
+      },
+      "selective_hybrid": {
+        "tp": 20,
+        "fp": 0,
+        "tn": 22,
+        "fn": 6,
+        "precision": 1.0,
+        "recall": 0.7692,
+        "specificity": 1.0,
+        "f1_score": 0.8696,
+        "llm_invocations": 4,
+        "incremental_ai_wins": 4,
+        "ai_win_cases": [
+          "REAL-REQUESTS-01",
+          "REAL-URLLIB3-02",
+          "REAL-URLLIB3-03",
+          "REAL-MARSHMALLOW-01"
+        ]
+      }
+    },
+    "fresh_held_out_evaluation_v04": {
+      "total_cases": 20,
+      "repositories_count": 4,
+      "repositories": [
+        "pallets/werkzeug",
+        "tornadoweb/tornado",
+        "redis/redis-py",
+        "psutil/psutil"
+      ],
+      "positive_cases": 12,
+      "negative_controls": 8,
+      "deterministic": {
+        "tp": 8,
+        "fp": 0,
+        "tn": 8,
+        "fn": 4,
+        "precision": 1.0,
+        "recall": 0.6667,
+        "specificity": 1.0,
+        "f1_score": 0.8000,
+        "accuracy": 0.8000
+      },
+      "selective_hybrid": {
+        "tp": 10,
+        "fp": 0,
+        "tn": 8,
+        "fn": 2,
+        "precision": 1.0,
+        "recall": 0.8333,
+        "specificity": 1.0,
+        "f1_score": 0.9091,
+        "accuracy": 0.9000,
+        "llm_invocations": 4,
+        "incremental_ai_wins": 2,
+        "ai_win_cases": [
+          "HELD-TORNADO-03",
+          "HELD-REDIS-03"
+        ]
+      }
+    },
+    "adversarial_stress_benchmark": {
+      "total_cases": 10,
+      "positive_cases": 6,
+      "negative_controls": 4,
+      "tp": 2,
+      "fp": 0,
+      "tn": 4,
+      "fn": 4,
+      "precision": 1.0,
+      "recall": 0.3333,
+      "specificity": 1.0,
+      "accuracy": 0.6000,
+      "categories_passed": [
+        "ADV-02-HOMONYM-TRAP (TN)",
+        "ADV-03-INTERNAL-INVARIANT (TN)",
+        "ADV-04-BACKWARD-COMPAT-ADD (TN)",
+        "ADV-06-BEHAVIORAL-NO-SIG (TP via Qwen3-8B)",
+        "ADV-07-RETURN-TYPE-ITERATOR (TP via Qwen3-8B)",
+        "ADV-10-HISTORICAL-NOTE (TN via Claim Classifier)"
+      ],
+      "categories_missed_at_retrieval": [
+        "ADV-01-VOCAB-GAP",
+        "ADV-05-PROCEDURAL-OBSOLETE",
+        "ADV-08-CALLGRAPH-DEFAULT",
+        "ADV-09-SECURITY-INDIRECT"
+      ]
+    }
+  },
+  "repository_level_metrics": {
+    "pallets/werkzeug": { "cases": 5, "tp": 2, "fp": 0, "tn": 2, "fn": 1, "precision": 1.0, "recall": 0.6667, "f1": 0.8000 },
+    "tornadoweb/tornado": { "cases": 5, "tp": 3, "fp": 0, "tn": 2, "fn": 0, "precision": 1.0, "recall": 1.0000, "f1": 1.0000, "ai_wins": 1 },
+    "redis/redis-py": { "cases": 5, "tp": 3, "fp": 0, "tn": 2, "fn": 0, "precision": 1.0, "recall": 1.0000, "f1": 1.0000, "ai_wins": 1 },
+    "psutil/psutil": { "cases": 5, "tp": 2, "fp": 0, "tn": 2, "fn": 1, "precision": 1.0, "recall": 0.6667, "f1": 0.8000 },
+    "psf/requests": { "cases": 6, "tp": 3, "fp": 0, "tn": 3, "fn": 0, "precision": 1.0, "recall": 1.0000, "f1": 1.0000, "ai_wins": 1 },
+    "urllib3/urllib3": { "cases": 6, "tp": 4, "fp": 0, "tn": 2, "fn": 0, "precision": 1.0, "recall": 1.0000, "f1": 1.0000, "ai_wins": 2 },
+    "marshmallow-code/marshmallow": { "cases": 4, "tp": 2, "fp": 0, "tn": 2, "fn": 0, "precision": 1.0, "recall": 1.0000, "f1": 1.0000, "ai_wins": 1 },
+    "encode/httpx": { "cases": 6, "tp": 3, "fp": 0, "tn": 2, "fn": 1, "precision": 1.0, "recall": 0.7500, "f1": 0.8571 },
+    "encode/starlette": { "cases": 4, "tp": 2, "fp": 0, "tn": 2, "fn": 0, "precision": 1.0, "recall": 1.0000, "f1": 1.0000 },
+    "pallets/flask": { "cases": 5, "tp": 2, "fp": 0, "tn": 2, "fn": 1, "precision": 1.0, "recall": 0.6667, "f1": 0.8000 },
+    "pallets/click": { "cases": 4, "tp": 1, "fp": 0, "tn": 2, "fn": 1, "precision": 1.0, "recall": 0.5000, "f1": 0.6667 },
+    "pydantic/pydantic": { "cases": 5, "tp": 3, "fp": 0, "tn": 2, "fn": 0, "precision": 1.0, "recall": 1.0000, "f1": 1.0000 },
+    "axios/axios": { "cases": 2, "tp": 1, "fp": 0, "tn": 1, "fn": 0, "precision": 1.0, "recall": 1.0000, "f1": 1.0000 },
+    "facebook/react": { "cases": 2, "tp": 1, "fp": 0, "tn": 1, "fn": 0, "precision": 1.0, "recall": 1.0000, "f1": 1.0000 },
+    "fastapi/fastapi": { "cases": 5, "tp": 0, "fp": 0, "tn": 2, "fn": 3, "precision": 1.0, "recall": 0.0000, "f1": 0.0000, "note": "Positive cases audited as questionable due to synthetic parameter defaults" }
+  },
+  "safety_and_evidence_invariants": {
+    "total_negative_controls_evaluated": 34,
+    "false_positive_count": 0,
+    "overall_precision": 1.0,
+    "overall_specificity": 1.0,
+    "evidence_snapshot_verification_rate": 1.0,
+    "cross_repo_abstention_safety_rate": 1.0,
+    "hallucinated_evidence_count": 0
+  }
+}

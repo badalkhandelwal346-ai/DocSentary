@@ -31,20 +31,22 @@ You verify whether a documentation statement remains accurate after a code chang
 Use only the evidence provided.
 
 RULES:
-1. DRIFT: Return DRIFT only when doc asserts a concrete factual claim that directly
-   contradicts new code behavior (e.g. code returns [], doc says raises exception or returns None).
-2. NO_DRIFT: Return NO_DRIFT if:
-   - The doc statement is a code example demonstrating user custom arguments (e.g. timeout=999).
-   - The doc is describing historical context, migration advice, or version notes.
-   - The code change is an internal refactoring and documented guarantee remains valid.
-   - The doc is general-purpose and not directly contradicted by the change.
-3. UNCERTAIN: Return UNCERTAIN if evidence is dynamic, incomplete, or ambiguous.
-4. POTENTIAL_DRIFT: Return POTENTIAL_DRIFT if public API was renamed/removed but doc may use alias.
+1. DRIFT (claim_status: contradicted): Return DRIFT only when doc asserts a concrete factual claim
+   that directly contradicts new code behavior (e.g. code returns bytes, doc says returns None;
+   or cipher TLS 1.0 removed, doc says TLS 1.0 is permitted by default).
+2. POTENTIAL_DRIFT (claim_status: partially_outdated): Return POTENTIAL_DRIFT when a new parameter or
+   capability supersedes documented procedural instructions (e.g. native json= added, making manual serialization outdated).
+3. NO_DRIFT:
+   - claim_status: incomplete_new_capability (New feature added, but existing documented usage remains valid).
+   - claim_status: still_accurate (Code change is internal refactoring/optimization; documentation remains factually true).
+   - claim_status: historical (Doc describes historical version, changelog, or migration note).
+4. UNCERTAIN (claim_status: uncertain): Return UNCERTAIN if evidence is dynamic, incomplete, or ambiguous. Always abstain when in doubt.
 
 Never invent identifiers, line numbers, or facts outside the evidence.
 Return valid JSON matching this schema:
 {
   "status": "DRIFT | POTENTIAL_DRIFT | NO_DRIFT | UNCERTAIN",
+  "claim_status": "contradicted | partially_outdated | incomplete_new_capability | still_accurate | historical | uncertain",
   "severity": "high | medium | low | info",
   "explanation": "One or two concise sentences.",
   "evidence_ids": ["CODE-1", "DOC-1"],
@@ -168,6 +170,16 @@ class ModelClient:
                         clean_json = clean_json.rsplit("\n", 1)[0]
 
                 parsed = json.loads(clean_json)
+                if isinstance(parsed, dict) and "claim_status" not in parsed:
+                    status = parsed.get("status")
+                    if status == "DRIFT":
+                        parsed["claim_status"] = "contradicted"
+                    elif status == "POTENTIAL_DRIFT":
+                        parsed["claim_status"] = "partially_outdated"
+                    elif status == "NO_DRIFT":
+                        parsed["claim_status"] = "still_accurate"
+                    else:
+                        parsed["claim_status"] = "uncertain"
                 return ModelAssessment.model_validate(parsed)
 
         except Exception as exc:

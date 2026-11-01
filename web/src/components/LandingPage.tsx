@@ -1,310 +1,466 @@
 import React from "react";
 import {
-  ShieldAlert,
+  Shield,
   ArrowRight,
-  FileText,
   Code2,
-  Zap,
-  Lock,
-  ChevronRight,
-  ExternalLink
+  FileText,
+  AlertTriangle,
+  Github,
+  Compass,
+  ExternalLink,
+  GitPullRequest,
 } from "lucide-react";
 
 interface LandingPageProps {
-  onEnterApp: () => void;
+  onNavigateSignup: () => void;
+  onNavigateLogin: () => void;
+  onEnterDashboard: () => void;
 }
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onEnterApp }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({
+  onNavigateSignup,
+  onNavigateLogin,
+  onEnterDashboard,
+}) => {
   return (
-    <div className="min-h-screen bg-brand-dark text-gray-100 flex flex-col font-sans selection:bg-emerald-500/20 selection:text-emerald-400">
-      {/* Top Navbar */}
-      <header className="border-b border-brand-border/60 bg-brand-dark/80 backdrop-blur sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-3 cursor-pointer" onClick={onEnterApp}>
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-              <ShieldAlert className="w-5 h-5" />
-            </div>
-            <span className="font-bold tracking-tight text-white text-lg">DocSentry</span>
+    <div className="min-h-screen bg-[#F4EFE6] text-[#08161B] flex flex-col font-sans paper-grain selection:bg-[#1C354D] selection:text-[#EAE7DC]">
+      {/* Editorial Masthead Top Header */}
+      <header className="border-b border-[#D8CEBC] px-6 lg:px-12 h-20 flex items-center justify-between sticky top-0 bg-[#F4EFE6]/90 backdrop-blur z-50">
+        <div className="flex items-center space-x-3 cursor-pointer" onClick={onEnterDashboard}>
+          <div className="w-10 h-10 rounded bg-[#1C354D] text-[#EAE7DC] flex items-center justify-center shadow-paper border border-[#1D5B6B]">
+            <Shield className="w-5 h-5" />
           </div>
-
-          <nav className="hidden md:flex items-center space-x-8 text-sm text-gray-400">
-            <a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a>
-            <a href="#problem" className="hover:text-white transition-colors">The Problem</a>
-            <a href="#checks" className="hover:text-white transition-colors">Supported Checks</a>
-            <a href="https://github.com/Atharv386/DocSentary" target="_blank" rel="noreferrer" className="hover:text-white transition-colors flex items-center space-x-1">
-              <span>GitHub</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
-          </nav>
-
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={onEnterApp}
-              className="px-4 py-2 rounded-lg bg-emerald-500 text-brand-dark font-semibold text-xs tracking-wide hover:bg-emerald-400 transition-all flex items-center space-x-1.5 shadow-sm"
-            >
-              <span>Launch App</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+          <div>
+            <span className="font-serif text-2xl font-bold tracking-tight text-[#08161B] block leading-none">
+              DocSentry
+            </span>
+            <span className="text-[10px] font-mono tracking-widest uppercase text-[#3D4F55]">
+              Est. 2026 • Documentation Intelligence
+            </span>
           </div>
+        </div>
+
+        <nav className="hidden md:flex items-center space-x-8 text-xs font-mono text-[#3D4F55]">
+          <a href="#problem" className="hover:text-[#08161B] transition-colors">
+            01. The Problem
+          </a>
+          <a href="#workflow" className="hover:text-[#08161B] transition-colors">
+            02. Workflow
+          </a>
+          <a href="#evidence" className="hover:text-[#08161B] transition-colors">
+            03. Evidence Engine
+          </a>
+          <a href="#architecture" className="hover:text-[#08161B] transition-colors">
+            04. Architecture
+          </a>
+          <a
+            href="https://github.com/Atharv386/DocSentary"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-[#08161B] transition-colors flex items-center space-x-1"
+          >
+            <span>GitHub</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </nav>
+
+        <div className="flex items-center space-x-3">
+          <button
+            onClick={onNavigateLogin}
+            className="px-3.5 py-1.5 text-xs font-mono text-[#3D4F55] hover:text-[#08161B] transition-colors"
+          >
+            Sign In
+          </button>
+          <button
+            onClick={onNavigateSignup}
+            className="px-4 py-2 rounded bg-[#1C354D] hover:bg-[#0D1C29] text-[#EAE7DC] text-xs font-mono font-semibold tracking-wide shadow-paper transition-all flex items-center space-x-1.5"
+          >
+            <span>Connect GitHub</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="pt-20 pb-16 px-6 max-w-5xl mx-auto text-center space-y-6">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-mono bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>Hacktoberfest 2026 Sonipat • PS5 Implementation</span>
+      {/* HERO SECTION */}
+      <section className="pt-20 pb-16 px-6 lg:px-12 max-w-6xl mx-auto text-center space-y-6">
+        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded bg-[#EBE4D8] border border-[#D8CEBC] text-[11px] font-mono text-[#4A6B32]">
+          <span className="w-2 h-2 rounded-full bg-[#4A6B32] animate-pulse"></span>
+          <span>DOCUMENTATION INTELLIGENCE / EST. 2026</span>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-          Your code changed. <br />
-          <span className="text-emerald-400">Did your docs?</span>
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-bold tracking-tight text-[#08161B] leading-[1.08] max-w-4xl mx-auto">
+          Your code changes. <br />
+          <span className="italic font-normal text-[#1C354D]">Does your documentation</span> remember?
         </h1>
 
-        <p className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
-          DocSentry detects documentation drift in pull requests, connects outdated statements to the code changes behind them, and helps engineering teams keep documentation trustworthy.
+        <p className="text-base sm:text-lg text-[#3D4F55] max-w-2xl mx-auto leading-relaxed font-sans">
+          DocSentry connects code changes to the documentation they may have made incorrect, giving
+          developers evidence-backed visibility into documentation drift before it hits production.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <button
-            onClick={onEnterApp}
-            className="w-full sm:w-auto px-6 py-3 rounded-lg bg-emerald-500 text-brand-dark font-semibold text-sm hover:bg-emerald-400 transition-all flex items-center justify-center space-x-2 shadow-lg shadow-emerald-500/10"
+            onClick={onNavigateSignup}
+            className="w-full sm:w-auto px-7 py-3.5 rounded bg-[#1C354D] hover:bg-[#0D1C29] text-[#EAE7DC] font-mono text-xs font-bold tracking-wide transition-all shadow-paper flex items-center justify-center space-x-2"
           >
-            <span>Analyze a Pull Request</span>
+            <Github className="w-4 h-4" />
+            <span>Connect GitHub Account</span>
             <ArrowRight className="w-4 h-4" />
           </button>
           <a
-            href="#how-it-works"
-            className="w-full sm:w-auto px-6 py-3 rounded-lg bg-brand-surface border border-brand-border text-gray-300 font-medium text-sm hover:bg-brand-card transition-all flex items-center justify-center space-x-2"
+            href="#problem"
+            className="w-full sm:w-auto px-6 py-3.5 rounded bg-[#EBE4D8] hover:bg-[#E2DACB] border border-[#D8CEBC] text-[#08161B] font-mono text-xs font-semibold transition-all flex items-center justify-center space-x-2"
           >
-            <span>See How It Works</span>
+            <Compass className="w-4 h-4 text-[#C87D55]" />
+            <span>Explore How It Works</span>
           </a>
         </div>
 
-        {/* Hero Interactive Drift Preview Card */}
-        <div className="pt-10 max-w-4xl mx-auto text-left">
-          <div className="bg-brand-surface border border-brand-border rounded-xl shadow-2xl overflow-hidden">
-            {/* Card Header */}
-            <div className="px-4 py-3 bg-brand-card border-b border-brand-border flex items-center justify-between text-xs">
-              <div className="flex items-center space-x-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
-                <span className="font-mono text-gray-400 ml-2">DocSentry PR Analysis #42</span>
+        {/* HERO EDITORIAL SPECIMEN / EVIDENCE SPREAD */}
+        <div className="pt-12 max-w-5xl mx-auto text-left">
+          <div className="bg-[#EBE4D8] border border-[#D8CEBC] rounded-lg shadow-editorial overflow-hidden relative">
+            {/* Terracotta Stamp */}
+            <div className="absolute top-3 right-4 px-2.5 py-0.5 bg-[#C87D55] text-white text-[10px] font-mono uppercase tracking-wider rounded">
+              SPECIMEN • PR #42 DRIFT INSPECTOR
+            </div>
+
+            {/* Specimen Header */}
+            <div className="px-6 py-4 border-b border-[#D8CEBC] bg-[#F4EFE6]/70 flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#C87D55]"></span>
+                <span className="font-mono text-xs text-[#08161B] font-bold">
+                  Pull Request #42: Refactor Batch Ingestion Parameters
+                </span>
               </div>
-              <span className="font-mono text-red-400 bg-red-500/10 border border-red-500/20 px-2 py-0.5 rounded text-[11px]">
-                1 Confirmed Drift
+              <span className="font-mono text-[11px] text-[#4A6B32] font-semibold bg-[#4A6B32]/10 px-2 py-0.5 rounded">
+                AST Deterministic Match
               </span>
             </div>
 
-            {/* Side-by-Side Hero Comparison */}
-            <div className="p-5 grid grid-cols-1 md:grid-cols-2 gap-4 bg-brand-dark/50">
-              <div className="p-3.5 rounded-lg bg-brand-dark border border-brand-border space-y-2">
-                <div className="flex items-center justify-between text-xs font-mono text-amber-400">
-                  <span className="flex items-center space-x-1">
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>docs/config.md:23</span>
-                  </span>
-                  <span className="text-[10px] bg-brand-card px-1.5 py-0.5 rounded border border-brand-border">DocSpan</span>
+            {/* Side-by-Side Dual-Span Inspector (Cyanotype Contrast) */}
+            <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#D8CEBC]">
+              {/* Left: Code AST Diff */}
+              <div className="p-6 bg-[#08161B] text-[#EAE7DC] font-mono text-xs space-y-3">
+                <div className="flex justify-between items-center text-[11px] text-[#8DA0A8] border-b border-[#1C354D] pb-2">
+                  <div className="flex items-center space-x-1.5">
+                    <Code2 className="w-3.5 h-3.5 text-[#5894C4]" />
+                    <span className="text-[#EAE7DC]">src/engine/ingest.py</span>
+                  </div>
+                  <span className="text-[#5894C4]">lines 42–48</span>
                 </div>
-                <p className="text-xs text-gray-300 leading-relaxed font-sans">
-                  "The default timeout is <span className="text-amber-300 font-semibold underline decoration-amber-500/50">30 seconds</span>."
-                </p>
+                <div className="space-y-1 font-mono text-[11px] leading-relaxed">
+                  <div className="text-[#6A7E85]">  def ingest_dataset(</div>
+                  <div className="text-red-400 bg-red-950/40 px-1 -mx-1">
+                    -     records: List[Dict], max_batch_size: int = 50
+                  </div>
+                  <div className="text-emerald-400 bg-emerald-950/40 px-1 -mx-1">
+                    +     records: List[Dict], batch_limit: int = 100
+                  </div>
+                  <div className="text-[#6A7E85]">  ) -&gt; IngestResult:</div>
+                </div>
+                <div className="p-2 rounded bg-[#1C354D]/50 border border-[#1D5B6B] text-[10px] text-[#8DA0A8] space-y-1">
+                  <div className="font-bold text-[#5894C4]">AST Symbol Fact:</div>
+                  <div>Parameter <code className="text-red-300">max_batch_size</code> renamed to <code className="text-emerald-300">batch_limit</code>; default changed from 50 to 100.</div>
+                </div>
               </div>
 
-              <div className="p-3.5 rounded-lg bg-brand-dark border border-brand-border space-y-2">
-                <div className="flex items-center justify-between text-xs font-mono text-emerald-400">
-                  <span className="flex items-center space-x-1">
-                    <Code2 className="w-3.5 h-3.5" />
-                    <span>src/client.py:12</span>
-                  </span>
-                  <span className="text-[10px] bg-brand-card px-1.5 py-0.5 rounded border border-brand-border">AST Fact</span>
+              {/* Right: Markdown Documentation Drift */}
+              <div className="p-6 bg-[#F4EFE6] text-[#08161B] space-y-3">
+                <div className="flex justify-between items-center text-[11px] font-mono text-[#6A7E85] border-b border-[#D8CEBC] pb-2">
+                  <div className="flex items-center space-x-1.5">
+                    <FileText className="w-3.5 h-3.5 text-[#C87D55]" />
+                    <span className="text-[#08161B] font-bold">docs/api/ingestion.md</span>
+                  </div>
+                  <span className="text-[#C87D55]">line 114</span>
                 </div>
-                <div className="text-xs font-mono text-emerald-300">
-                  <code>def connect(..., <span className="font-bold underline decoration-emerald-500/50">timeout=60</span>):</code>
+                <div className="p-3 bg-[#EBE4D8] border-l-2 border-[#C87D55] text-xs font-serif leading-relaxed italic text-[#3D4F55]">
+                  &ldquo;The ingestion job processes records in chunks bounded by <mark className="bg-[#C87D55]/20 text-[#08161B] font-mono font-bold not-italic px-1">max_batch_size</mark>, which defaults to 50 items.&rdquo;
+                </div>
+                <div className="p-2.5 rounded bg-white/70 border border-[#D8CEBC] text-[11px] font-mono space-y-1">
+                  <div className="font-bold text-[#C87D55] flex items-center space-x-1">
+                    <AlertTriangle className="w-3 h-3 text-[#C87D55]" />
+                    <span>CONFIRMED DRIFT DETECTED</span>
+                  </div>
+                  <p className="text-[#3D4F55]">
+                    Documentation asserts parameter name <code className="bg-[#EBE4D8] px-1 rounded">max_batch_size</code> and default value 50, but code AST now requires <code className="bg-[#EBE4D8] px-1 rounded">batch_limit</code> with default 100.
+                  </p>
                 </div>
               </div>
-            </div>
-
-            <div className="px-5 py-3 bg-brand-surface border-t border-brand-border flex items-center justify-between text-xs text-gray-400">
-              <span>Rule: <code className="text-gray-300 font-mono">PY-DEFAULT-001</code> (Deterministic)</span>
-              <button
-                onClick={onEnterApp}
-                className="text-emerald-400 hover:text-emerald-300 font-mono flex items-center space-x-1"
-              >
-                <span>Inspect full finding</span>
-                <ChevronRight className="w-3 h-3" />
-              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* The Problem Section */}
-      <section id="problem" className="py-20 border-t border-brand-border/60 bg-brand-surface/40">
-        <div className="max-w-6xl mx-auto px-6 space-y-12">
-          <div className="text-center space-y-3">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-semibold">The Core Problem</h2>
-            <p className="text-3xl font-bold text-white">Documentation silently lies as software evolves.</p>
-            <p className="text-sm text-gray-400 max-w-xl mx-auto">
-              A developer updates code. The PR is reviewed for test passes and style. But no one knows which documentation pages referenced that exact signature or default.
+      {/* SECTION 01 — THE PROBLEM */}
+      <section id="problem" className="py-20 border-t border-[#D8CEBC] bg-[#EBE4D8]/60">
+        <div className="max-w-5xl mx-auto px-6 lg:px-12 space-y-12">
+          <div className="space-y-3 text-center max-w-2xl mx-auto">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#C87D55]">
+              Section 01 / The Inevitable Decay
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#08161B]">
+              Code moves at pull-request speed. Documentation stays frozen in time.
+            </h2>
+            <p className="text-sm text-[#3D4F55] leading-relaxed">
+              Every day, engineers refactor function signatures, alter environment variables, and
+              rename configuration parameters. Code passes CI unit tests because the tests are
+              updated—but documentation sits unnoticed until a user files a bug.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-xl bg-brand-card border border-brand-border space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
-                <FileText className="w-5 h-5" />
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="p-6 bg-[#F4EFE6] border border-[#D8CEBC] rounded-lg space-y-3 shadow-sm">
+              <div className="w-8 h-8 rounded bg-[#1C354D] text-[#EAE7DC] flex items-center justify-center font-mono font-bold text-xs">
+                01
               </div>
-              <h3 className="text-base font-semibold text-white">Silent API Drift</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Default arguments, optional flags, and configuration keys change in code, while documentation pages continue advertising obsolete values.
+              <h3 className="font-serif font-bold text-lg text-[#08161B]">Parameter Renames</h3>
+              <p className="text-xs text-[#3D4F55] leading-relaxed">
+                Functions update their keyword arguments, but quickstarts and README examples
+                continue instructing users to pass deleted or renamed arguments.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl bg-brand-card border border-brand-border space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-                <Zap className="w-5 h-5" />
+            <div className="p-6 bg-[#F4EFE6] border border-[#D8CEBC] rounded-lg space-y-3 shadow-sm">
+              <div className="w-8 h-8 rounded bg-[#1C354D] text-[#EAE7DC] flex items-center justify-center font-mono font-bold text-xs">
+                02
               </div>
-              <h3 className="text-base font-semibold text-white">Doc Linters Only Check Syntax</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Traditional linters check markdown formatting, broken URLs, and typos. They cannot tell you if a statement in a document is still true in the code.
+              <h3 className="font-serif font-bold text-lg text-[#08161B]">Return Type Changes</h3>
+              <p className="text-xs text-[#3D4F55] leading-relaxed">
+                APIs return structured dataclasses instead of dictionaries or tuples. Docs claim a
+                primitive return value, breaking downstream client expectations.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl bg-brand-card border border-brand-border space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-                <Lock className="w-5 h-5" />
+            <div className="p-6 bg-[#F4EFE6] border border-[#D8CEBC] rounded-lg space-y-3 shadow-sm">
+              <div className="w-8 h-8 rounded bg-[#1C354D] text-[#EAE7DC] flex items-center justify-center font-mono font-bold text-xs">
+                03
               </div>
-              <h3 className="text-base font-semibold text-white">Zero-Hallucination Proof</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                DocSentry enforces a strict trust boundary. Every reported drift must bind directly to extracted AST facts and verified source lines.
+              <h3 className="font-serif font-bold text-lg text-[#08161B]">Configuration Shifts</h3>
+              <p className="text-xs text-[#3D4F55] leading-relaxed">
+                Environment flags like <code className="bg-[#EBE4D8] px-1 rounded">API_TIMEOUT</code> get replaced with nested YAML configs, leaving deployment guides completely obsolete.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 border-t border-brand-border/60">
-        <div className="max-w-6xl mx-auto px-6 space-y-12">
-          <div className="text-center space-y-3">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-semibold">Workflow</h2>
-            <p className="text-3xl font-bold text-white">How DocSentry Protects Your Repositories</p>
+      {/* SECTION 02 — HOW DOCSENTRY WORKS */}
+      <section id="workflow" className="py-20 border-t border-[#D8CEBC] bg-[#F4EFE6]">
+        <div className="max-w-5xl mx-auto px-6 lg:px-12 space-y-12">
+          <div className="space-y-3 text-center max-w-2xl mx-auto">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#4A6B32]">
+              Section 02 / The Detection Loop
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#08161B]">
+              Five deterministic stages. Zero hallucinated drift.
+            </h2>
+            <p className="text-sm text-[#3D4F55] leading-relaxed">
+              DocSentry does not make vague AI guesses. Every finding is anchored directly to an AST
+              symbol fact and a verified sentence from your Markdown repository files.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="p-5 rounded-xl bg-brand-surface border border-brand-border space-y-3">
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Step 01</span>
-              <h3 className="text-sm font-semibold text-white">PR Event Trigger</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Runs automatically on GitHub Pull Requests via GitHub Actions or locally with the <code className="text-gray-300">docsentry scan</code> CLI.
+          <div className="space-y-4">
+            {[
+              {
+                step: "01",
+                title: "Git Pull Request Trigger",
+                desc: "GitHub webhook delivers pull_request.opened or synchronize event with base and head commit SHAs.",
+                tag: "WEBHOOK",
+              },
+              {
+                step: "02",
+                title: "Python AST Extraction",
+                desc: "Static AST parser walks both revisions, recording exact function signatures, class members, and parameter defaults.",
+                tag: "STATIC AST",
+              },
+              {
+                step: "03",
+                title: "Markdown Claim Extraction",
+                desc: "Documentation parser isolates individual sentence claims mentioning code symbols, API calls, and configurations.",
+                tag: "PARSER",
+              },
+              {
+                step: "04",
+                title: "Deterministic Rule Matching",
+                desc: "Rules check for missing arguments, deleted classes, altered defaults, and type contract violations.",
+                tag: "ENGINE v0.2",
+              },
+              {
+                step: "05",
+                title: "Evidence Verification & Check Run",
+                desc: "Results post as GitHub Check Runs with side-by-side diff hunks and exact doc spans.",
+                tag: "CHECK RUN",
+              },
+            ].map((s) => (
+              <div
+                key={s.step}
+                className="p-5 bg-[#EBE4D8] border border-[#D8CEBC] rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+              >
+                <div className="flex items-start space-x-4">
+                  <span className="font-serif font-bold text-2xl text-[#1C354D]">{s.step}</span>
+                  <div>
+                    <h4 className="font-serif font-bold text-base text-[#08161B]">{s.title}</h4>
+                    <p className="text-xs text-[#3D4F55] mt-0.5">{s.desc}</p>
+                  </div>
+                </div>
+                <span className="px-2.5 py-1 bg-[#F4EFE6] border border-[#D8CEBC] text-[10px] font-mono text-[#1C354D] rounded font-semibold tracking-wider">
+                  {s.tag}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 03 — EVIDENCE NOT GUESSES */}
+      <section id="evidence" className="py-20 border-t border-[#D8CEBC] bg-[#EBE4D8]/70">
+        <div className="max-w-5xl mx-auto px-6 lg:px-12 space-y-12">
+          <div className="space-y-3 text-center max-w-2xl mx-auto">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#1C354D]">
+              Section 03 / Provenance & Trust
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#08161B]">
+              Evidence, not guesses.
+            </h2>
+            <p className="text-sm text-[#3D4F55] leading-relaxed">
+              Developer tools must earn developer trust. When DocSentry raises a warning, you can
+              audit the exact AST node and doc span that triggered it.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 font-mono text-xs">
+            <div className="p-5 bg-[#F4EFE6] border border-[#D8CEBC] rounded-lg space-y-2">
+              <span className="px-2 py-0.5 bg-[#1C354D] text-[#EAE7DC] text-[9px] rounded uppercase tracking-wider">
+                Provenance Badge
+              </span>
+              <div className="font-serif font-bold text-base text-[#08161B]">DETERMINISTIC</div>
+              <p className="text-xs text-[#3D4F55] font-sans">
+                Direct AST comparison proves a signature mismatch without requiring AI interpretation. 100% reproducible.
               </p>
             </div>
 
-            <div className="p-5 rounded-xl bg-brand-surface border border-brand-border space-y-3">
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Step 02</span>
-              <h3 className="text-sm font-semibold text-white">Static AST & GFM Extraction</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Extracts functions, parameters, defaults, and constants statically without ever executing target code.
+            <div className="p-5 bg-[#F4EFE6] border border-[#D8CEBC] rounded-lg space-y-2">
+              <span className="px-2 py-0.5 bg-[#C87D55] text-white text-[9px] rounded uppercase tracking-wider">
+                Provenance Badge
+              </span>
+              <div className="font-serif font-bold text-base text-[#08161B]">QWEN3-8B VERIFIED</div>
+              <p className="text-xs text-[#3D4F55] font-sans">
+                Semantic reasoning identifies prose drift where wording implies behavior that the code AST no longer supports.
               </p>
             </div>
 
-            <div className="p-5 rounded-xl bg-brand-surface border border-brand-border space-y-3">
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Step 03</span>
-              <h3 className="text-sm font-semibold text-white">Deterministic Candidate Scoring</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Ranks document passages by qualified symbol matching, parameter mentions, and heading contexts.
-              </p>
-            </div>
-
-            <div className="p-5 rounded-xl bg-brand-surface border border-brand-border space-y-3">
-              <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Step 04</span>
-              <h3 className="text-sm font-semibold text-white">Step Summary & Artifacts</h3>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Publishes side-by-side evidence directly to $GITHUB_STEP_SUMMARY and emits canonical <code className="text-gray-300">report.json</code>.
+            <div className="p-5 bg-[#F4EFE6] border border-[#D8CEBC] rounded-lg space-y-2">
+              <span className="px-2 py-0.5 bg-[#4A6B32] text-white text-[9px] rounded uppercase tracking-wider">
+                Provenance Badge
+              </span>
+              <div className="font-serif font-bold text-base text-[#08161B]">EVIDENCE VALIDATED</div>
+              <p className="text-xs text-[#3D4F55] font-sans">
+                Independent validator verifies that both the code diff hunk and markdown sentence exist verbatim in repository trees.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Supported Checks Grid */}
-      <section id="checks" className="py-20 border-t border-brand-border/60 bg-brand-surface/40">
-        <div className="max-w-6xl mx-auto px-6 space-y-8">
-          <div className="text-center space-y-3">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-emerald-400 font-semibold">Rules Catalogue</h2>
-            <p className="text-3xl font-bold text-white">Built-in Deterministic & Semantic Checks</p>
+      {/* SECTION 04 — ARCHITECTURE & GITHUB WORKFLOW */}
+      <section id="architecture" className="py-20 border-t border-[#D8CEBC] bg-[#F4EFE6]">
+        <div className="max-w-5xl mx-auto px-6 lg:px-12 space-y-12">
+          <div className="space-y-3 text-center max-w-2xl mx-auto">
+            <span className="text-[11px] font-mono uppercase tracking-widest text-[#4A6B32]">
+              Section 04 / Developer Workflow
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#08161B]">
+              Zero disruption to your engineering routine.
+            </h2>
+            <p className="text-sm text-[#3D4F55] leading-relaxed">
+              DocSentry connects directly to GitHub. Developers keep writing code; DocSentry runs
+              silently on pull requests and reports status checks before merge.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-4 rounded-lg bg-brand-card border border-brand-border space-y-1.5">
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-emerald-400 font-semibold">PY-DEFAULT-001</span>
-                <span className="text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded">DRIFT</span>
-              </div>
-              <div className="text-sm font-semibold text-white">Stale Default Value</div>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Catches changes where a parameter's default literal changes, but documentation still quotes the old value.
-              </p>
+          <div className="bg-[#EBE4D8] border border-[#D8CEBC] rounded-lg p-6 md:p-8 space-y-6">
+            <div className="flex items-center space-x-3 text-xs font-mono text-[#08161B] font-bold">
+              <GitPullRequest className="w-4 h-4 text-[#1C354D]" />
+              <span>DocSentry GitHub PR Check Run Summary</span>
             </div>
 
-            <div className="p-4 rounded-lg bg-brand-card border border-brand-border space-y-1.5">
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-emerald-400 font-semibold">PY-PARAM-002</span>
-                <span className="text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">DRIFT / POTENTIAL</span>
+            <div className="bg-[#08161B] text-[#EAE7DC] p-4 rounded font-mono text-xs space-y-2 overflow-x-auto">
+              <div className="text-emerald-400 font-bold">✓ DocSentry Analysis Complete — 1 Finding Identified</div>
+              <div className="text-[#8DA0A8]">Repository: Atharv386/DocSentary • PR #42 • Head: cb6234f</div>
+              <div className="pt-2 text-yellow-300">
+                [DRIFT] docs/api/ingestion.md:114 — Parameter 'max_batch_size' removed in src/engine/ingest.py
               </div>
-              <div className="text-sm font-semibold text-white">Stale Parameter Mention</div>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Flags instances where a parameter was removed or renamed, but existing prose still instructs users to pass it.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-lg bg-brand-card border border-brand-border space-y-1.5">
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-emerald-400 font-semibold">PY-SYMBOL-003</span>
-                <span className="text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">POTENTIAL_DRIFT</span>
+              <div className="text-[#8DA0A8] text-[11px]">
+                Suggestion: Update documentation sentence to reference 'batch_limit' with default 100.
               </div>
-              <div className="text-sm font-semibold text-white">Removed Symbol Reference</div>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Detects deleted functions or classes that are still cited in developer tutorials or API references.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-lg bg-brand-card border border-brand-border space-y-1.5">
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-emerald-400 font-semibold">PY-CONFIG-004</span>
-                <span className="text-red-400 bg-red-500/10 px-1.5 py-0.5 rounded">DRIFT</span>
-              </div>
-              <div className="text-sm font-semibold text-white">Stale CLI Flag or Config Key</div>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                Alerts when command-line arguments (argparse) are renamed or deleted while tables in documentation stay untouched.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Bottom CTA */}
-      <section className="py-20 border-t border-brand-border/60 text-center space-y-6">
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-          Keep your documentation as reliable as your code.
-        </h2>
-        <p className="text-gray-400 max-w-lg mx-auto text-sm">
-          Integrate DocSentry in under 5 minutes with our native GitHub Actions workflow and local CLI.
-        </p>
-        <button
-          onClick={onEnterApp}
-          className="px-6 py-3 rounded-lg bg-emerald-500 text-brand-dark font-semibold text-sm hover:bg-emerald-400 transition-all inline-flex items-center space-x-2 shadow-lg shadow-emerald-500/20"
-        >
-          <span>Launch Interactive Dashboard</span>
-          <ArrowRight className="w-4 h-4" />
-        </button>
+      {/* FINAL CTA SECTION */}
+      <section className="py-20 border-t border-[#D8CEBC] bg-[#EBE4D8] text-center">
+        <div className="max-w-3xl mx-auto px-6 space-y-6">
+          <span className="text-[11px] font-mono uppercase tracking-widest text-[#C87D55]">
+            Begin Guarding Your Documentation
+          </span>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#08161B]">
+            Keep your documentation as trustworthy as your code.
+          </h2>
+          <p className="text-sm text-[#3D4F55] leading-relaxed">
+            Connect your GitHub repositories in two minutes. Automated drift detection, AST-verified
+            precision, and seamless pull request check runs.
+          </p>
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              onClick={onNavigateSignup}
+              className="w-full sm:w-auto px-8 py-3.5 rounded bg-[#1C354D] hover:bg-[#0D1C29] text-[#EAE7DC] font-mono text-xs font-bold tracking-wide transition-all shadow-paper flex items-center justify-center space-x-2"
+            >
+              <Github className="w-4 h-4" />
+              <span>Connect GitHub & Start</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+            <button
+              onClick={onNavigateLogin}
+              className="w-full sm:w-auto px-6 py-3.5 rounded bg-[#F4EFE6] hover:bg-[#E2DACB] border border-[#D8CEBC] text-[#08161B] font-mono text-xs font-semibold"
+            >
+              Sign In to Existing Workspace
+            </button>
+          </div>
+        </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-brand-border/60 py-8 bg-brand-surface text-center text-xs text-gray-500 font-mono">
-        <p>DocSentry • Hacktoberfest 2026 Sonipat • Open Source under MIT License</p>
+      {/* EDITORIAL COLOPHON FOOTER */}
+      <footer className="border-t border-[#D8CEBC] bg-[#F4EFE6] py-12 px-6 lg:px-12 text-xs font-mono text-[#6A7E85]">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="space-y-1 text-center md:text-left">
+            <div className="font-serif text-lg font-bold text-[#08161B]">DocSentry</div>
+            <div>Documentation Drift Detection & Verification Platform</div>
+            <div className="text-[10px] text-[#8DA0A8]">
+              Designed & engineered for Hacktoberfest 2026 • Sonipat PS5 Edition
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-6 text-[11px]">
+            <a
+              href="https://github.com/Atharv386/DocSentary"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-[#08161B] transition-colors"
+            >
+              GitHub Repository
+            </a>
+            <span className="text-[#D8CEBC]">•</span>
+            <button onClick={onNavigateSignup} className="hover:text-[#08161B] transition-colors">
+              Sign Up
+            </button>
+            <span className="text-[#D8CEBC]">•</span>
+            <button onClick={onNavigateLogin} className="hover:text-[#08161B] transition-colors">
+              Sign In
+            </button>
+          </div>
+        </div>
       </footer>
     </div>
   );

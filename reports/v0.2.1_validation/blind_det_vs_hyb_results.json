@@ -1,0 +1,286 @@
+{
+  "deterministic_metrics": {
+    "total": 8,
+    "passed": 7,
+    "tp": 3,
+    "fp": 0,
+    "tn": 4,
+    "fn": 1,
+    "precision": 1.0,
+    "recall": 0.75,
+    "specificity": 1.0,
+    "f1": 0.8571428571428571,
+    "conditional_location_accuracy": 1.0,
+    "conditional_attribution_accuracy": 1.0,
+    "evidence_validation_rate": 1.0,
+    "average_latency_ms": 221.91599487996427,
+    "median_latency_ms": 224.9456670251675
+  },
+  "hybrid_metrics": {
+    "total": 8,
+    "passed": 7,
+    "tp": 3,
+    "fp": 0,
+    "tn": 4,
+    "fn": 1,
+    "precision": 1.0,
+    "recall": 0.75,
+    "specificity": 1.0,
+    "f1": 0.8571428571428571,
+    "conditional_location_accuracy": 1.0,
+    "conditional_attribution_accuracy": 1.0,
+    "evidence_validation_rate": 1.0,
+    "average_latency_ms": 219.39669274433982,
+    "median_latency_ms": 217.20233300584368
+  },
+  "cases": [
+    {
+      "case_id": "BLIND-URLLIB3-01",
+      "repository": "urllib3/urllib3",
+      "expected_finding": true,
+      "drift_type": "constant_value_change",
+      "affected_doc_sentence": "Default pool timeout is set to 3.0 seconds.",
+      "code_change_file": "urllib3/util/timeout.py",
+      "deterministic": {
+        "passed": false,
+        "detected": false,
+        "rule_id": null,
+        "status": "NO_DRIFT",
+        "exact_loc_match": false,
+        "correct_attr": false,
+        "evidence_valid": true,
+        "latency_ms": 224.95
+      },
+      "hybrid": {
+        "passed": false,
+        "detected": false,
+        "rule_id": null,
+        "status": "NO_DRIFT",
+        "exact_loc_match": false,
+        "correct_attr": false,
+        "evidence_valid": true,
+        "model_invocations": 0,
+        "latency_ms": 217.2
+      },
+      "ai_incremental_detection": false,
+      "ai_introduced_false_positive": false
+    },
+    {
+      "case_id": "BLIND-URLLIB3-NC1",
+      "repository": "urllib3/urllib3",
+      "expected_finding": false,
+      "drift_type": "negative_control_refactor",
+      "affected_doc_sentence": null,
+      "code_change_file": "urllib3/connectionpool.py",
+      "deterministic": {
+        "passed": true,
+        "detected": false,
+        "rule_id": null,
+        "status": "NO_DRIFT",
+        "exact_loc_match": false,
+        "correct_attr": false,
+        "evidence_valid": true,
+        "latency_ms": 234.97
+      },
+      "hybrid": {
+        "passed": true,
+        "detected": false,
+        "rule_id": null,
+        "status": "NO_DRIFT",
+        "exact_loc_match": false,
+        "correct_attr": false,
+        "evidence_valid": true,
+        "model_invocations": 0,
+        "latency_ms": 219.3
+      },
+      "ai_incremental_detection": false,
+      "ai_introduced_false_positive": false
+    },
+    {
+      "case_id": "BLIND-MARSHMALLOW-01",
+      "repository": "marshmallow-code/marshmallow",
+      "expected_finding": true,
+      "drift_type": "parameter_removed",
+      "affected_doc_sentence": "Provide a fallback value when deserializing using the `missing` argument.",
+      "code_change_file": "marshmallow/fields.py",
+      "deterministic": {
+        "passed": true,
+        "detected": true,
+        "rule_id": "PY-PARAM-002",
+        "status": "DRIFT",
+        "exact_loc_match": true,
+        "correct_attr": true,
+        "evidence_valid": true,
+        "latency_ms": 223.4
+      },
+      "hybrid": {
+        "passed": true,
+        "detected": true,
+        "rule_id": "PY-PARAM-002",
+        "status": "DRIFT",
+        "exact_loc_match": true,
+        "correct_attr": true,
+        "evidence_valid": true,
+        "model_invocations": 0,
+        "latency_ms": 226.79
+      },
+      "ai_incremental_detection": false,
+      "ai_introduced_false_positive": false
+    },
+    {
+      "case_id": "BLIND-MARSHMALLOW-NC1",
+      "repository": "marshmallow-code/marshmallow",
+      "expected_finding": false,
+      "drift_type": "negative_control_refactor",
+      "affected_doc_sentence": null,
+      "code_change_file": "marshmallow/schema.py",
+      "deterministic": {
+        "passed": true,
+        "detected": false,
+        "rule_id": null,
+        "status": "NO_DRIFT",
+        "exact_loc_match": false,
+        "correct_attr": false,
+        "evidence_valid": true,
+        "latency_ms": 203.74
+      },
+      "hybrid": {
+        "passed": true,
+        "detected": false,
+        "rule_id": null,
+        "status": "NO_DRIFT",
+        "exact_loc_match": false,
+        "correct_attr": false,
+        "evidence_valid": true,
+        "model_invocations": 0,
+        "latency_ms": 209.78
+      },
+      "ai_incremental_detection": false,
+      "ai_introduced_false_positive": false
+    },
+    {
+      "case_id": "BLIND-AIOHTTP-01",
+      "repository": "aio-libs/aiohttp",
+      "expected_finding": true,
+      "drift_type": "default_value_change",
+      "affected_doc_sentence": "Session connection timeout defaults to 300 seconds.",
+      "code_change_file": "aiohttp/client.py",
+      "deterministic": {
+        "passed": true,
+        "detected": true,
+        "rule_id": "PY-DEFAULT-001",
+        "status": "DRIFT",
+        "exact_loc_match": true,
+        "correct_attr": true,
+        "evidence_valid": true,
+        "latency_ms": 216.06
+      },
+      "hybrid": {
+        "passed": true,
+        "detected": true,
+        "rule_id": "PY-DEFAULT-001",
+        "status": "DRIFT",
+        "exact_loc_match": true,
+        "correct_attr": true,
+        "evidence_valid": true,
+        "model_invocations": 0,
+        "latency_ms": 214.4
+      },
+      "ai_incremental_detection": false,
+      "ai_introduced_false_positive": false
+    },
+    {
+      "case_id": "BLIND-AIOHTTP-NC1",
+      "repository": "aio-libs/aiohttp",
+      "expected_finding": false,
+      "drift_type": "negative_control_refactor",
+      "affected_doc_sentence": null,
+      "code_change_file": "aiohttp/web_app.py",
+      "deterministic": {
+        "passed": true,
+        "detected": false,
+        "rule_id": null,
+        "status": "NO_DRIFT",
+        "exact_loc_match": false,
+        "correct_attr": false,
+        "evidence_valid": true,
+        "latency_ms": 209.46
+      },
+      "hybrid": {
+        "passed": true,
+        "detected": false,
+        "rule_id": null,
+        "status": "NO_DRIFT",
+        "exact_loc_match": false,
+        "correct_attr": false,
+        "evidence_valid": true,
+        "model_invocations": 0,
+        "latency_ms": 205.95
+      },
+      "ai_incremental_detection": false,
+      "ai_introduced_false_positive": false
+    },
+    {
+      "case_id": "BLIND-STARLETTE-01",
+      "repository": "encode/starlette",
+      "expected_finding": true,
+      "drift_type": "symbol_removed",
+      "affected_doc_sentence": "Wrap ASGI apps with `BaseHTTPMiddleware` to process streaming requests.",
+      "code_change_file": "starlette/middleware/base.py",
+      "deterministic": {
+        "passed": true,
+        "detected": true,
+        "rule_id": "PY-SYMBOL-003",
+        "status": "POTENTIAL_DRIFT",
+        "exact_loc_match": true,
+        "correct_attr": true,
+        "evidence_valid": true,
+        "latency_ms": 230.72
+      },
+      "hybrid": {
+        "passed": true,
+        "detected": true,
+        "rule_id": "PY-SYMBOL-003",
+        "status": "POTENTIAL_DRIFT",
+        "exact_loc_match": true,
+        "correct_attr": true,
+        "evidence_valid": true,
+        "model_invocations": 0,
+        "latency_ms": 248.99
+      },
+      "ai_incremental_detection": false,
+      "ai_introduced_false_positive": false
+    },
+    {
+      "case_id": "BLIND-STARLETTE-NC1",
+      "repository": "encode/starlette",
+      "expected_finding": false,
+      "drift_type": "negative_control_refactor",
+      "affected_doc_sentence": null,
+      "code_change_file": "starlette/responses.py",
+      "deterministic": {
+        "passed": true,
+        "detected": false,
+        "rule_id": null,
+        "status": "NO_DRIFT",
+        "exact_loc_match": false,
+        "correct_attr": false,
+        "evidence_valid": true,
+        "latency_ms": 232.02
+      },
+      "hybrid": {
+        "passed": true,
+        "detected": false,
+        "rule_id": null,
+        "status": "NO_DRIFT",
+        "exact_loc_match": false,
+        "correct_attr": false,
+        "evidence_valid": true,
+        "model_invocations": 0,
+        "latency_ms": 212.76
+      },
+      "ai_incremental_detection": false,
+      "ai_introduced_false_positive": false
+    }
+  ]
+}

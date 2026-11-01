@@ -6,6 +6,7 @@ from docsentry.contracts.findings import Finding
 from docsentry.rules.config_flags import detect_config_flag_drift
 from docsentry.rules.constants import detect_constant_drift
 from docsentry.rules.defaults import detect_default_drift
+from docsentry.rules.returns import detect_return_drift
 from docsentry.rules.signatures import detect_signature_drift
 from docsentry.rules.symbols import detect_symbol_drift
 
@@ -77,6 +78,15 @@ class DeterministicRuleEngine:
                 if key not in seen_keys:
                     seen_keys.add(key)
                     findings.append(f_const)
+                    continue
+
+            # PY-RETURN-007
+            f_ret = detect_return_drift(fact, span, finding_id)
+            if f_ret:
+                key = (f_ret.rule_id, fact.fact_id, span.span_id)
+                if key not in seen_keys:
+                    seen_keys.add(key)
+                    findings.append(f_ret)
                     continue
 
         return findings

@@ -108,6 +108,11 @@ class ASTVisitor(ast.NodeVisitor):
                 default_val = _unparse_node(def_node)
                 if isinstance(def_node, ast.Name):
                     self.facts.constant_param_links.setdefault(def_node.id, []).append(arg.arg)
+                    self.facts.constant_param_links.setdefault(def_node.id, []).append(node.name)
+                    if self.scope_stack:
+                        self.facts.constant_param_links.setdefault(
+                            def_node.id, []
+                        ).append(self.scope_stack[-1])
                 elif isinstance(def_node, ast.Call):
                     self.facts.dynamic_signals.append(
                         (node.name, "dynamic_default_call", node.lineno)
@@ -137,6 +142,11 @@ class ASTVisitor(ast.NodeVisitor):
             def_str = _unparse_node(def_node)
             if isinstance(def_node, ast.Name):
                 self.facts.constant_param_links.setdefault(def_node.id, []).append(arg.arg)
+                self.facts.constant_param_links.setdefault(def_node.id, []).append(node.name)
+                if self.scope_stack:
+                    self.facts.constant_param_links.setdefault(
+                        def_node.id, []
+                    ).append(self.scope_stack[-1])
             params.append(
                 {
                     "name": arg.arg,
@@ -599,11 +609,13 @@ def compare_python_facts(
             )
 
     # 2. Compare Constants
+    all_constants = list(after_facts.constants.keys())
     for cname, (b_val, b_line) in before_facts.constants.items():
         if cname in after_facts.constants:
             a_val, a_line = after_facts.constants[cname]
             if b_val != a_val:
                 linked = after_facts.constant_param_links.get(cname, [])
+                siblings = [c for c in all_constants if c != cname]
                 facts.append(
                     CodeFact(
                         fact_id=f"const-chg-{len(facts) + 1}",
@@ -619,7 +631,7 @@ def compare_python_facts(
                         line_after=a_line,
                         source_change_id=change_id,
                         static_confidence="high",
-                        metadata={"linked_params": linked},
+                        metadata={"linked_params": linked, "sibling_constants": siblings},
                     )
                 )
 

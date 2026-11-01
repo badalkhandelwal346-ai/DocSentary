@@ -27,6 +27,18 @@ api = [
     "fastapi>=0.110,<1",
     "uvicorn>=0.29,<1",
 ]
+backend = [
+    "fastapi>=0.110,<1",
+    "uvicorn>=0.29,<1",
+    "sqlalchemy>=2.0,<3",
+    "alembic>=1.13,<2",
+    "pydantic-settings>=2.0,<3",
+    "pyjwt>=2.8,<3",
+    "cryptography>=42.0,<44",
+    "bcrypt>=4.0,<5",
+    "email-validator>=2.0,<3",
+    "psycopg[binary]>=3.1,<4",
+]
 
 [project.scripts]
 docsentry = "docsentry.cli:app"
@@ -49,10 +61,13 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I"]
-ignore = ["B008"]
+ignore = ["B008", "E501", "E712"]
 
 [tool.ruff.lint.per-file-ignores]
 "src/docsentry/evaluation/dataset.py" = ["E501"]
 "src/docsentry/evaluation/dataset_semantic.py" = ["E501"]
 "src/docsentry/evaluation/historical_dataset.py" = ["E501"]
 "src/docsentry/evaluation/historical_runner.py" = ["E501"]
+"backend/alembic/*" = ["E501", "E402", "I001"]
+"backend/app/schemas/__init__.py" = ["F401"]
+"backend/app/db/models/__init__.py" = ["F401"]

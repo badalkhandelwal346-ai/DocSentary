@@ -101,6 +101,16 @@ def scan_command(
         "--fail-on",
         help="CI failure policy: high, medium, low, never.",
     ),
+    docs_repo: Path | None = typer.Option(
+        None,
+        "--docs-repo",
+        help="Separate documentation repository root; must contain .git.",
+    ),
+    docs_ref: str | None = typer.Option(
+        None,
+        "--docs-ref",
+        help="Documentation revision/SHA to evaluate in the docs repository.",
+    ),
 ) -> None:
     """Analyze code changes between base and head for documentation drift."""
     repo_path = repo.resolve()
@@ -128,6 +138,30 @@ def scan_command(
         console.print(f"[bold red]Git Error:[/bold red] {err.stderr}", style="red")
         raise typer.Exit(code=2) from err
 
+    docs_repo_path = None
+    docs_head_sha = None
+    docs_snapshot_service = None
+    if docs_repo:
+        docs_repo_path = docs_repo.resolve()
+        if not (docs_repo_path / ".git").exists():
+            console.print(
+                f"[bold red]Error:[/bold red] Documentation path '{docs_repo_path}' is not a Git repository."
+            )
+            raise typer.Exit(code=2)
+        docs_runner = GitRunner(docs_repo_path)
+        target_ref = docs_ref or "HEAD"
+        try:
+            docs_head_sha = docs_runner.resolve_sha(target_ref)
+            docs_snapshot_service = GitSnapshotService(
+                docs_runner, max_file_bytes=cfg.limits.max_file_bytes
+            )
+        except GitError as err:
+            console.print(
+                f"[bold red]Docs Git Error:[/bold red] Could not resolve ref '{target_ref}' in docs repo: {err.stderr}",
+                style="red",
+            )
+            raise typer.Exit(code=2) from err
+
     scan_id = f"scan-{uuid.uuid4().hex[:12]}"
     context = ScanContext(
         repo_root=repo_path,
@@ -141,6 +175,8 @@ def scan_command(
         model_enabled=not no_model and cfg.model.enabled,
         config_hash=cfg_hash,
         tool_version=__version__,
+        docs_repo_root=docs_repo_path,
+        docs_head_sha=docs_head_sha,
     )
 
     diff_service = GitDiffService(runner)
@@ -149,7 +185,9 @@ def scan_command(
     candidate_mapper = CandidateMapper(top_k=cfg.limits.max_doc_spans_per_fact)
     rule_engine = DeterministicRuleEngine()
     model_verifier = SemanticModelVerifier(ModelClient())
-    evidence_validator = EvidenceValidator(snapshot_service)
+    evidence_validator = EvidenceValidator(
+        snapshot_service, doc_snapshot_service=docs_snapshot_service
+    )
 
     deps = Dependencies(
         git_diff_service=diff_service,

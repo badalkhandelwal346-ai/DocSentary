@@ -1,0 +1,450 @@
+{
+  "deterministic_v03_dev_val": {
+    "total": 26,
+    "passed": 22,
+    "tp": 10,
+    "fp": 0,
+    "tn": 12,
+    "fn": 4,
+    "precision": 1.0,
+    "recall": 0.7142857142857143,
+    "specificity": 1.0,
+    "f1": 0.8333333333333333,
+    "invocations": 0,
+    "avg_latency_ms": 225.32108661835082,
+    "cases": [
+      {
+        "case_id": "REAL-HTTPX-01",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-CONST-005",
+        "latency_ms": 229.77395800990053
+      },
+      {
+        "case_id": "REAL-HTTPX-02",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-PARAM-002",
+        "latency_ms": 236.7275409924332
+      },
+      {
+        "case_id": "REAL-HTTPX-03",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 212.90916699217632
+      },
+      {
+        "case_id": "REAL-HTTPX-NC1",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 214.2578750208486
+      },
+      {
+        "case_id": "REAL-HTTPX-NC2",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 216.9506670034025
+      },
+      {
+        "case_id": "REAL-HTTPX-NC3",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 260.6498340028338
+      },
+      {
+        "case_id": "REAL-CLICK-01",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-DEFAULT-001",
+        "latency_ms": 217.13674999773502
+      },
+      {
+        "case_id": "REAL-CLICK-02",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-SYMBOL-003",
+        "latency_ms": 211.3969170022756
+      },
+      {
+        "case_id": "REAL-CLICK-03",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-CONFIG-004",
+        "latency_ms": 218.9080840034876
+      },
+      {
+        "case_id": "REAL-CLICK-NC1",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 211.69987501343712
+      },
+      {
+        "case_id": "REAL-CLICK-NC2",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 217.10224999696948
+      },
+      {
+        "case_id": "REAL-REQUESTS-01",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 217.43395802332088
+      },
+      {
+        "case_id": "REAL-REQUESTS-02",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-CONST-005",
+        "latency_ms": 228.38483299710788
+      },
+      {
+        "case_id": "REAL-REQUESTS-NC1",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 216.56512501067482
+      },
+      {
+        "case_id": "REAL-REQUESTS-NC2",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 205.92412500991486
+      },
+      {
+        "case_id": "REAL-FLASK-01",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-SYMBOL-003",
+        "latency_ms": 216.82854200480506
+      },
+      {
+        "case_id": "REAL-FLASK-02",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-CONFIG-004",
+        "latency_ms": 223.77725000842474
+      },
+      {
+        "case_id": "REAL-FLASK-03",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-DEFAULT-001",
+        "latency_ms": 233.34991701995023
+      },
+      {
+        "case_id": "REAL-FLASK-NC1",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 216.43324999604374
+      },
+      {
+        "case_id": "REAL-FLASK-NC2",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 245.09345801197924
+      },
+      {
+        "case_id": "REAL-URLLIB3-01",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-PARAM-002",
+        "latency_ms": 262.147624976933
+      },
+      {
+        "case_id": "REAL-URLLIB3-02",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 220.77204199740663
+      },
+      {
+        "case_id": "REAL-URLLIB3-03",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 212.1307500055991
+      },
+      {
+        "case_id": "REAL-URLLIB3-NC1",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 209.73299999604933
+      },
+      {
+        "case_id": "REAL-URLLIB3-NC2",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 244.58012499962933
+      },
+      {
+        "case_id": "REAL-URLLIB3-NC3",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 257.6813339837827
+      }
+    ]
+  },
+  "hybrid_v03_dev_val": {
+    "total": 26,
+    "passed": 25,
+    "tp": 13,
+    "fp": 0,
+    "tn": 12,
+    "fn": 1,
+    "precision": 1.0,
+    "recall": 0.9285714285714286,
+    "specificity": 1.0,
+    "f1": 0.962962962962963,
+    "invocations": 3,
+    "avg_latency_ms": 5288.295955156523,
+    "cases": [
+      {
+        "case_id": "REAL-HTTPX-01",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-CONST-005",
+        "latency_ms": 257.4049590039067
+      },
+      {
+        "case_id": "REAL-HTTPX-02",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-PARAM-002",
+        "latency_ms": 239.32345799403265
+      },
+      {
+        "case_id": "REAL-HTTPX-03",
+        "expected": true,
+        "detected": false,
+        "passed": false,
+        "rule_id": null,
+        "latency_ms": 42011.55862500309
+      },
+      {
+        "case_id": "REAL-HTTPX-NC1",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 229.56620799959637
+      },
+      {
+        "case_id": "REAL-HTTPX-NC2",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 208.4345420007594
+      },
+      {
+        "case_id": "REAL-HTTPX-NC3",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 26380.719291017158
+      },
+      {
+        "case_id": "REAL-CLICK-01",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-DEFAULT-001",
+        "latency_ms": 266.9614579936024
+      },
+      {
+        "case_id": "REAL-CLICK-02",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-SYMBOL-003",
+        "latency_ms": 218.0977090029046
+      },
+      {
+        "case_id": "REAL-CLICK-03",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-CONFIG-004",
+        "latency_ms": 216.73262500553392
+      },
+      {
+        "case_id": "REAL-CLICK-NC1",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 229.0289580123499
+      },
+      {
+        "case_id": "REAL-CLICK-NC2",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 245.0552090012934
+      },
+      {
+        "case_id": "REAL-REQUESTS-01",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-BEHAVIOR-006",
+        "latency_ms": 23327.05462499871
+      },
+      {
+        "case_id": "REAL-REQUESTS-02",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-CONST-005",
+        "latency_ms": 325.7107090030331
+      },
+      {
+        "case_id": "REAL-REQUESTS-NC1",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 318.66841699229553
+      },
+      {
+        "case_id": "REAL-REQUESTS-NC2",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 302.9406660061795
+      },
+      {
+        "case_id": "REAL-FLASK-01",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-SYMBOL-003",
+        "latency_ms": 266.1003340035677
+      },
+      {
+        "case_id": "REAL-FLASK-02",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-CONFIG-004",
+        "latency_ms": 362.5363339961041
+      },
+      {
+        "case_id": "REAL-FLASK-03",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-DEFAULT-001",
+        "latency_ms": 274.96058301767334
+      },
+      {
+        "case_id": "REAL-FLASK-NC1",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 240.08133300230838
+      },
+      {
+        "case_id": "REAL-FLASK-NC2",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 237.8543330123648
+      },
+      {
+        "case_id": "REAL-URLLIB3-01",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-PARAM-002",
+        "latency_ms": 239.636333019007
+      },
+      {
+        "case_id": "REAL-URLLIB3-02",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-BEHAVIOR-006",
+        "latency_ms": 20490.031041990733
+      },
+      {
+        "case_id": "REAL-URLLIB3-03",
+        "expected": true,
+        "detected": true,
+        "passed": true,
+        "rule_id": "PY-BEHAVIOR-006",
+        "latency_ms": 19984.749041002942
+      },
+      {
+        "case_id": "REAL-URLLIB3-NC1",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 214.1047500190325
+      },
+      {
+        "case_id": "REAL-URLLIB3-NC2",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 200.71279199328274
+      },
+      {
+        "case_id": "REAL-URLLIB3-NC3",
+        "expected": false,
+        "detected": false,
+        "passed": true,
+        "rule_id": null,
+        "latency_ms": 207.67049997812137
+      }
+    ]
+  }
+}
